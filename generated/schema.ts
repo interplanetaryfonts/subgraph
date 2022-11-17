@@ -11,199 +11,826 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class FontProjectMinted extends Entity {
-  constructor(id: Bytes) {
+export class Query extends Entity {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save FontProjectMinted entity without an ID");
+    assert(id != null, "Cannot save Query entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type FontProjectMinted must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.STRING,
+        `Entities of type Query must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("FontProjectMinted", id.toBytes().toHexString(), this);
+      store.set("Query", id.toString(), this);
     }
   }
 
-  static load(id: Bytes): FontProjectMinted | null {
-    return changetype<FontProjectMinted | null>(
-      store.get("FontProjectMinted", id.toHexString())
-    );
+  static load(id: string): Query | null {
+    return changetype<Query | null>(store.get("Query", id));
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
-  get fontId(): Bytes {
-    let value = this.get("fontId");
-    return value!.toBytes();
+  get users(): Array<string> {
+    let value = this.get("users");
+    return value!.toStringArray();
   }
 
-  set fontId(value: Bytes) {
-    this.set("fontId", Value.fromBytes(value));
+  set users(value: Array<string>) {
+    this.set("users", Value.fromStringArray(value));
   }
 
-  get tokenId(): BigInt {
-    let value = this.get("tokenId");
-    return value!.toBigInt();
+  get fontProjects(): Array<string> | null {
+    let value = this.get("fontProjects");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
+  set fontProjects(value: Array<string> | null) {
+    if (!value) {
+      this.unset("fontProjects");
+    } else {
+      this.set("fontProjects", Value.fromStringArray(<Array<string>>value));
+    }
   }
 
-  get blockNumber(): BigInt {
-    let value = this.get("blockNumber");
-    return value!.toBigInt();
+  get fontStreams(): Array<string> | null {
+    let value = this.get("fontStreams");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set blockNumber(value: BigInt) {
-    this.set("blockNumber", Value.fromBigInt(value));
-  }
-
-  get blockTimestamp(): BigInt {
-    let value = this.get("blockTimestamp");
-    return value!.toBigInt();
-  }
-
-  set blockTimestamp(value: BigInt) {
-    this.set("blockTimestamp", Value.fromBigInt(value));
-  }
-
-  get transactionHash(): Bytes {
-    let value = this.get("transactionHash");
-    return value!.toBytes();
-  }
-
-  set transactionHash(value: Bytes) {
-    this.set("transactionHash", Value.fromBytes(value));
+  set fontStreams(value: Array<string> | null) {
+    if (!value) {
+      this.unset("fontStreams");
+    } else {
+      this.set("fontStreams", Value.fromStringArray(<Array<string>>value));
+    }
   }
 }
 
-export class NewFontProjectCreated extends Entity {
-  constructor(id: Bytes) {
+export class User extends Entity {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save User entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type User must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("User", id.toString(), this);
+    }
+  }
+
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): string {
+    let value = this.get("address");
+    return value!.toString();
+  }
+
+  set address(value: string) {
+    this.set("address", Value.fromString(value));
+  }
+
+  get email(): string | null {
+    let value = this.get("email");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set email(value: string | null) {
+    if (!value) {
+      this.unset("email");
+    } else {
+      this.set("email", Value.fromString(<string>value));
+    }
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
+  }
+
+  get website(): string | null {
+    let value = this.get("website");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set website(value: string | null) {
+    if (!value) {
+      this.unset("website");
+    } else {
+      this.set("website", Value.fromString(<string>value));
+    }
+  }
+
+  get bio(): string | null {
+    let value = this.get("bio");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set bio(value: string | null) {
+    if (!value) {
+      this.unset("bio");
+    } else {
+      this.set("bio", Value.fromString(<string>value));
+    }
+  }
+
+  get links(): Array<string> | null {
+    let value = this.get("links");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set links(value: Array<string> | null) {
+    if (!value) {
+      this.unset("links");
+    } else {
+      this.set("links", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get lensHandle(): string | null {
+    let value = this.get("lensHandle");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set lensHandle(value: string | null) {
+    if (!value) {
+      this.unset("lensHandle");
+    } else {
+      this.set("lensHandle", Value.fromString(<string>value));
+    }
+  }
+
+  get createdAt(): i32 {
+    let value = this.get("createdAt");
+    return value!.toI32();
+  }
+
+  set createdAt(value: i32) {
+    this.set("createdAt", Value.fromI32(value));
+  }
+
+  get updatedAt(): i32 {
+    let value = this.get("updatedAt");
+    return value!.toI32();
+  }
+
+  set updatedAt(value: i32) {
+    this.set("updatedAt", Value.fromI32(value));
+  }
+
+  get creator(): boolean {
+    let value = this.get("creator");
+    return value!.toBoolean();
+  }
+
+  set creator(value: boolean) {
+    this.set("creator", Value.fromBoolean(value));
+  }
+
+  get collector(): boolean {
+    let value = this.get("collector");
+    return value!.toBoolean();
+  }
+
+  set collector(value: boolean) {
+    this.set("collector", Value.fromBoolean(value));
+  }
+}
+
+export class Link extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Link entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Link must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Link", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Link | null {
+    return changetype<Link | null>(store.get("Link", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get address(): string {
+    let value = this.get("address");
+    return value!.toString();
+  }
+
+  set address(value: string) {
+    this.set("address", Value.fromString(value));
+  }
+}
+
+export class FontProject extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save FontProject entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type FontProject must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("FontProject", id.toString(), this);
+    }
+  }
+
+  static load(id: string): FontProject | null {
+    return changetype<FontProject | null>(store.get("FontProject", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get perCharacterMintPrice(): i32 {
+    let value = this.get("perCharacterMintPrice");
+    return value!.toI32();
+  }
+
+  set perCharacterMintPrice(value: i32) {
+    this.set("perCharacterMintPrice", Value.fromI32(value));
+  }
+
+  get creator(): string {
+    let value = this.get("creator");
+    return value!.toString();
+  }
+
+  set creator(value: string) {
+    this.set("creator", Value.fromString(value));
+  }
+
+  get idaRoyaltyIndex(): i32 {
+    let value = this.get("idaRoyaltyIndex");
+    return value!.toI32();
+  }
+
+  set idaRoyaltyIndex(value: i32) {
+    this.set("idaRoyaltyIndex", Value.fromI32(value));
+  }
+
+  get launchDateTime(): i32 {
+    let value = this.get("launchDateTime");
+    return value!.toI32();
+  }
+
+  set launchDateTime(value: i32) {
+    this.set("launchDateTime", Value.fromI32(value));
+  }
+
+  get createdAt(): i32 {
+    let value = this.get("createdAt");
+    return value!.toI32();
+  }
+
+  set createdAt(value: i32) {
+    this.set("createdAt", Value.fromI32(value));
+  }
+
+  get updatedAt(): i32 {
+    let value = this.get("updatedAt");
+    return value!.toI32();
+  }
+
+  set updatedAt(value: i32) {
+    this.set("updatedAt", Value.fromI32(value));
+  }
+
+  get fontFilesCID(): string {
+    let value = this.get("fontFilesCID");
+    return value!.toString();
+  }
+
+  set fontFilesCID(value: string) {
+    this.set("fontFilesCID", Value.fromString(value));
+  }
+
+  get mintings(): i32 {
+    let value = this.get("mintings");
+    return value!.toI32();
+  }
+
+  set mintings(value: i32) {
+    this.set("mintings", Value.fromI32(value));
+  }
+
+  get distributionToken(): string {
+    let value = this.get("distributionToken");
+    return value!.toString();
+  }
+
+  set distributionToken(value: string) {
+    this.set("distributionToken", Value.fromString(value));
+  }
+}
+
+export class FontStream extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save FontStream entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type FontStream must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("FontStream", id.toString(), this);
+    }
+  }
+
+  static load(id: string): FontStream | null {
+    return changetype<FontStream | null>(store.get("FontStream", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get duration(): i32 {
+    let value = this.get("duration");
+    return value!.toI32();
+  }
+
+  set duration(value: i32) {
+    this.set("duration", Value.fromI32(value));
+  }
+
+  get fundingGoalAmount(): i32 {
+    let value = this.get("fundingGoalAmount");
+    return value!.toI32();
+  }
+
+  set fundingGoalAmount(value: i32) {
+    this.set("fundingGoalAmount", Value.fromI32(value));
+  }
+
+  get startDateTime(): i32 {
+    let value = this.get("startDateTime");
+    return value!.toI32();
+  }
+
+  set startDateTime(value: i32) {
+    this.set("startDateTime", Value.fromI32(value));
+  }
+
+  get createdAt(): i32 {
+    let value = this.get("createdAt");
+    return value!.toI32();
+  }
+
+  set createdAt(value: i32) {
+    this.set("createdAt", Value.fromI32(value));
+  }
+
+  get updatedAt(): i32 {
+    let value = this.get("updatedAt");
+    return value!.toI32();
+  }
+
+  set updatedAt(value: i32) {
+    this.set("updatedAt", Value.fromI32(value));
+  }
+
+  get proposer(): string {
+    let value = this.get("proposer");
+    return value!.toString();
+  }
+
+  set proposer(value: string) {
+    this.set("proposer", Value.fromString(value));
+  }
+
+  get isApproved(): boolean {
+    let value = this.get("isApproved");
+    return value!.toBoolean();
+  }
+
+  set isApproved(value: boolean) {
+    this.set("isApproved", Value.fromBoolean(value));
+  }
+
+  get project(): string {
+    let value = this.get("project");
+    return value!.toString();
+  }
+
+  set project(value: string) {
+    this.set("project", Value.fromString(value));
+  }
+
+  get streamingSuperToken(): string {
+    let value = this.get("streamingSuperToken");
+    return value!.toString();
+  }
+
+  set streamingSuperToken(value: string) {
+    this.set("streamingSuperToken", Value.fromString(value));
+  }
+
+  get fundings(): Array<string> | null {
+    let value = this.get("fundings");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set fundings(value: Array<string> | null) {
+    if (!value) {
+      this.unset("fundings");
+    } else {
+      this.set("fundings", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
+  get collaborations(): Array<string> | null {
+    let value = this.get("collaborations");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set collaborations(value: Array<string> | null) {
+    if (!value) {
+      this.unset("collaborations");
+    } else {
+      this.set("collaborations", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+}
+
+export class FontStreamFund extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save FontStreamFund entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type FontStreamFund must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("FontStreamFund", id.toString(), this);
+    }
+  }
+
+  static load(id: string): FontStreamFund | null {
+    return changetype<FontStreamFund | null>(store.get("FontStreamFund", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get funder(): string {
+    let value = this.get("funder");
+    return value!.toString();
+  }
+
+  set funder(value: string) {
+    this.set("funder", Value.fromString(value));
+  }
+
+  get amount(): i32 {
+    let value = this.get("amount");
+    return value!.toI32();
+  }
+
+  set amount(value: i32) {
+    this.set("amount", Value.fromI32(value));
+  }
+
+  get rate(): i32 {
+    let value = this.get("rate");
+    return value!.toI32();
+  }
+
+  set rate(value: i32) {
+    this.set("rate", Value.fromI32(value));
+  }
+
+  get stream(): string {
+    let value = this.get("stream");
+    return value!.toString();
+  }
+
+  set stream(value: string) {
+    this.set("stream", Value.fromString(value));
+  }
+
+  get createdAt(): i32 {
+    let value = this.get("createdAt");
+    return value!.toI32();
+  }
+
+  set createdAt(value: i32) {
+    this.set("createdAt", Value.fromI32(value));
+  }
+
+  get updatedAt(): i32 {
+    let value = this.get("updatedAt");
+    return value!.toI32();
+  }
+
+  set updatedAt(value: i32) {
+    this.set("updatedAt", Value.fromI32(value));
+  }
+}
+
+export class FontStreamCollaboration extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
     let id = this.get("id");
     assert(
       id != null,
-      "Cannot save NewFontProjectCreated entity without an ID"
+      "Cannot save FontStreamCollaboration entity without an ID"
     );
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type NewFontProjectCreated must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.STRING,
+        `Entities of type FontStreamCollaboration must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("NewFontProjectCreated", id.toBytes().toHexString(), this);
+      store.set("FontStreamCollaboration", id.toString(), this);
     }
   }
 
-  static load(id: Bytes): NewFontProjectCreated | null {
-    return changetype<NewFontProjectCreated | null>(
-      store.get("NewFontProjectCreated", id.toHexString())
+  static load(id: string): FontStreamCollaboration | null {
+    return changetype<FontStreamCollaboration | null>(
+      store.get("FontStreamCollaboration", id)
     );
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
-    return value!.toBytes();
-  }
-
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
-  }
-
-  get fontId(): Bytes {
-    let value = this.get("fontId");
-    return value!.toBytes();
-  }
-
-  set fontId(value: Bytes) {
-    this.set("fontId", Value.fromBytes(value));
-  }
-
-  get metaDataCID(): string {
-    let value = this.get("metaDataCID");
     return value!.toString();
   }
 
-  set metaDataCID(value: string) {
-    this.set("metaDataCID", Value.fromString(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
-  get creatorAddress(): Bytes {
-    let value = this.get("creatorAddress");
-    return value!.toBytes();
+  get proposer(): string {
+    let value = this.get("proposer");
+    return value!.toString();
   }
 
-  set creatorAddress(value: Bytes) {
-    this.set("creatorAddress", Value.fromBytes(value));
+  set proposer(value: string) {
+    this.set("proposer", Value.fromString(value));
   }
 
-  get mintPrice(): BigInt {
-    let value = this.get("mintPrice");
-    return value!.toBigInt();
+  get deliverablesCID(): string {
+    let value = this.get("deliverablesCID");
+    return value!.toString();
   }
 
-  set mintPrice(value: BigInt) {
-    this.set("mintPrice", Value.fromBigInt(value));
+  set deliverablesCID(value: string) {
+    this.set("deliverablesCID", Value.fromString(value));
   }
 
-  get createdAt(): BigInt {
+  get funderApprovedVoters(): Array<string> | null {
+    let value = this.get("funderApprovedVoters");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set funderApprovedVoters(value: Array<string> | null) {
+    if (!value) {
+      this.unset("funderApprovedVoters");
+    } else {
+      this.set(
+        "funderApprovedVoters",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+
+  get funderDisapprovedVoters(): Array<string> | null {
+    let value = this.get("funderDisapprovedVoters");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set funderDisapprovedVoters(value: Array<string> | null) {
+    if (!value) {
+      this.unset("funderDisapprovedVoters");
+    } else {
+      this.set(
+        "funderDisapprovedVoters",
+        Value.fromStringArray(<Array<string>>value)
+      );
+    }
+  }
+
+  get stream(): string {
+    let value = this.get("stream");
+    return value!.toString();
+  }
+
+  set stream(value: string) {
+    this.set("stream", Value.fromString(value));
+  }
+
+  get createdAt(): i32 {
     let value = this.get("createdAt");
-    return value!.toBigInt();
+    return value!.toI32();
   }
 
-  set createdAt(value: BigInt) {
-    this.set("createdAt", Value.fromBigInt(value));
+  set createdAt(value: i32) {
+    this.set("createdAt", Value.fromI32(value));
   }
 
-  get startDateTime(): BigInt {
-    let value = this.get("startDateTime");
-    return value!.toBigInt();
+  get updatedAt(): i32 {
+    let value = this.get("updatedAt");
+    return value!.toI32();
   }
 
-  set startDateTime(value: BigInt) {
-    this.set("startDateTime", Value.fromBigInt(value));
-  }
-
-  get blockNumber(): BigInt {
-    let value = this.get("blockNumber");
-    return value!.toBigInt();
-  }
-
-  set blockNumber(value: BigInt) {
-    this.set("blockNumber", Value.fromBigInt(value));
-  }
-
-  get blockTimestamp(): BigInt {
-    let value = this.get("blockTimestamp");
-    return value!.toBigInt();
-  }
-
-  set blockTimestamp(value: BigInt) {
-    this.set("blockTimestamp", Value.fromBigInt(value));
-  }
-
-  get transactionHash(): Bytes {
-    let value = this.get("transactionHash");
-    return value!.toBytes();
-  }
-
-  set transactionHash(value: Bytes) {
-    this.set("transactionHash", Value.fromBytes(value));
+  set updatedAt(value: i32) {
+    this.set("updatedAt", Value.fromI32(value));
   }
 }
