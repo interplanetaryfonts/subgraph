@@ -1,0 +1,26 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: FontProject
+    network: mumbai
+    source:
+      address: "0x8E8EDe6256e2fd1BcaB09Ff30afB7aeE45752a85"
+      abi: FontProject
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FontProjectMinted
+        - NewFontProjectCreated
+      abis:
+        - name: FontProject
+          file: ./abis/FontProject.json
+      eventHandlers:
+        - event: FontProjectMinted(bytes32,uint256)
+          handler: handleFontProjectMinted
+        - event: NewFontProjectCreated(bytes32,string,address,uint256,uint256,uint256)
+          handler: handleNewFontProjectCreated
+      file: ./src/font-project.ts

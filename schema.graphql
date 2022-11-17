@@ -1,0 +1,21 @@
+type FontProjectMinted @entity(immutable: true) {
+  id: Bytes!
+  fontId: Bytes! # bytes32
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewFontProjectCreated @entity(immutable: true) {
+  id: Bytes!
+  fontId: Bytes! # bytes32
+  metaDataCID: String! # string
+  creatorAddress: Bytes! # address
+  mintPrice: BigInt! # uint256
+  createdAt: BigInt! # uint256
+  startDateTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
