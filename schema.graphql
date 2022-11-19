@@ -22,7 +22,7 @@
 
 # Available Queries for the InterplanetaryFonts marketplace based on ERD
 
-  type Query @entity {
+  type Search @entity { # can't use "Query" as type name, changed to "Search"
       id: ID!
       users: [User!]! "There always be an user but some won't have projects"
       fontProjects: [FontProject!] "Some projects won't have streams"
