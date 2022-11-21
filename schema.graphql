@@ -1,119 +1,121 @@
 # type FontProjectMinted @entity(immutable: true) {
-#   id: Bytes!
-#   fontId: Bytes! # bytes32
-#   tokenId: BigInt! # uint256
-#   blockNumber: BigInt!
-#   blockTimestamp: BigInt!
-#   transactionHash: Bytes!
+#     id: Bytes!
+#     fontId: Bytes! # bytes32
+#     tokenId: BigInt! # uint256
+#     blockNumber: BigInt!
+#     blockTimestamp: BigInt!
+#     transactionHash: Bytes!
 # }
 
 # type NewFontProjectCreated @entity(immutable: true) {
-#   id: Bytes!
-#   fontId: Bytes! # bytes32
-#   metaDataCID: String! # string
-#   creatorAddress: Bytes! # address
-#   mintPrice: BigInt! # uint256
-#   createdAt: BigInt! # uint256
-#   startDateTime: BigInt! # uint256
-#   blockNumber: BigInt!
-#   blockTimestamp: BigInt!
-#   transactionHash: Bytes!
+#     id: Bytes!
+#     fontId: Bytes! # bytes32
+#     metaDataCID: String! # string
+#     creatorAddress: Bytes! # address
+#     mintPrice: BigInt! # uint256
+#     createdAt: BigInt! # uint256
+#     startDateTime: BigInt! # uint256
+#     blockNumber: BigInt!
+#     blockTimestamp: BigInt!
+#     transactionHash: Bytes!
 # }
 
-# Available Queries for the InterplanetaryFonts marketplace based on ERD
+"Global searches for the InterplanetaryFonts marketplace based on ERD"
+type Search @entity {
+    id: ID!
+    users: [User!]!
+    "There always be an user but some won't have projects"
+    fontProjects: [FontProject!]
+    # "Some projects won't have streams"
+    # fontStreams: [FontStream!]
+    # Strems might need an extra subgraph
+}
 
-  type Search @entity { # can't use "Query" as type name, changed to "Search"
-      id: ID!
-      users: [User!]! "There always be an user but some won't have projects"
-      fontProjects: [FontProject!] "Some projects won't have streams"
-      fontStreams: [FontStream!]
-    }
-
-"User"
-  type User @entity {
-      id: ID!
-      address: String!
-      email: String
-      name: String
-      website: String
-      bio: String
-      links: [Link!]
-      lensHandle: String
-  "Dates as ints, usefull for sorting"
-      createdAt: Int!
-      updatedAt: Int
-  "Check if is creator ond/or collectors"
-      creator: Boolean!
-      collector: Boolean!
-    }
+"Users structure"
+type User @entity {
+    id: ID!
+    address: Bytes!
+    email: String
+    name: String
+    website: String
+    bio: String
+    links: [Link!]
+    lensHandle: String
+    "Dates as BigInts, usefull for sorting"
+    createdAt: BigInt!
+    updatedAt: BigInt
+    "Check if is creator and/or collectors"
+    creator: Boolean!
+    collector: Boolean!
+}
 
 "If there's a link it will need this structure"
-  type Link @entity {
-      id: ID!
-      name: String!
-      address: String!
-    }
+type Link @entity {
+    id: ID!
+    name: String!
+    address: Bytes!
+}
 
 "Font Project"
-  type FontProject @entity {
-      id: ID!
-      name: String!
-    "Descriptions are optional"
-      description: String
-      perCharacterMintPrice: Int!
-      creator: User!
+type FontProject @entity {
+    id: ID!
+    "Values from CID"
+    name: String!
+    description: String
+    perCharacterMintPrice: BigInt!
+    creator: Bytes!
     "Superfluid related data"
-      idaRoyaltyIndex: Int
-    "Dates are received as integer and transformed with JS"
-      launchDateTime: Int!
-      createdAt: Int!
-      updatedAt: Int
+    idaRoyaltyIndex: BigInt
+    "Dates as BigInts, usefull for sorting"
+    launchDateTime: BigInt!
+    createdAt: BigInt!
+    updatedAt: BigInt
     "IPFS URL"
-      fontFilesCID: String!
-    "Number of mints defined by creator"
-      mintings: Int
+    fontFilesCID: String
+    "Number of mints defined by creator int86"
+    mintings: Int
     "Superfluid token contract address"
-      distributionToken: String!
-    }
+    distributionToken: Bytes
+}
 
-"Font Stream, funders, and collaborators"
-  type FontStream @entity {
-      id: ID!
-      name: String!
-      description: String
-      duration: Int!
-      fundingGoalAmount: Int!
-    "Dates are received as integer and transformed with JS"
-      startDateTime: Int!
-      createdAt: Int!
-      updatedAt: Int
-      proposer: User!
-      isApproved: Boolean!
-      project: FontProject!
-    "Superfluid SuperToken address"
-      streamingSuperToken: String!
-      fundings: [FontStreamFund!]
-      collaborations: [FontStreamCollaboration!]
-    }
+# "Font Stream, funders, and collaborators"
+# type FontStream @entity {
+#     id: ID!
+#     name: String!
+#     description: String
+#     aduration: BigInt!
+#     fundingGoalAmount: BigInt!
+#     "Dates as BigInts, usefull for sorting"
+#     startDateTime: BigInt!
+#     createdAt: BigInt!
+#     updatedAt: BigInt
+#     proposer: User!
+#     isApproved: Boolean!
+#     project: FontProject!
+#     "Superfluid SuperToken address"
+#     streamingSuperToken: Bytes!
+#     fundings: [FontStreamFund!]
+#     collaborations: [FontStreamCollaboration!]
+# }
 
-  type FontStreamFund @entity {
-      id: ID!
-      funder: User!
-      amount: Int!
-      rate: Int!
-      stream: FontStream!
-      createdAt: Int!
-      updatedAt: Int
-    }
-    
-  type FontStreamCollaboration @entity {
-      id: ID!
-      proposer: User!
-    "Path to ZIP file with source font"
-      deliverablesCID: String!
-      funderApprovedVoters: [User!]
-      funderDisapprovedVoters: [User!]
-      stream: FontStream!
-      createdAt: Int!
-      updatedAt: Int
-    }
+# type FontStreamFund @entity {
+#     id: ID!
+#     funder: User!
+#     amount: BigInt!
+#     rate: BigInt!
+#     stream: FontStream!
+#     createdAt: BigInt!
+#     updatedAt: BigInt
+# }
+
+# type FontStreamCollaboration @entity {
+#     id: ID!
+#     proposer: User!
+#     "Path to ZIP file with source font"
+#     deliverablesCID: String!
+#     funderApprovedVoters: [User!]
+#     funderDisapprovedVoters: [User!]
+#     stream: FontStream!
+#     createdAt: BigInt!
+#     updatedAt: BigInt
+# }
