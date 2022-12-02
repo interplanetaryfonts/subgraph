@@ -11,64 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Search extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Search entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type Search must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("Search", id.toString(), this);
-    }
-  }
-
-  static load(id: string): Search | null {
-    return changetype<Search | null>(store.get("Search", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get users(): Array<string> {
-    let value = this.get("users");
-    return value!.toStringArray();
-  }
-
-  set users(value: Array<string>) {
-    this.set("users", Value.fromStringArray(value));
-  }
-
-  get fontProjects(): Array<string> | null {
-    let value = this.get("fontProjects");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set fontProjects(value: Array<string> | null) {
-    if (!value) {
-      this.unset("fontProjects");
-    } else {
-      this.set("fontProjects", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-}
-
 export class User extends Entity {
   constructor(id: string) {
     super();
@@ -100,13 +42,22 @@ export class User extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get address(): Bytes {
-    let value = this.get("address");
+  get walletAddress(): Bytes {
+    let value = this.get("walletAddress");
     return value!.toBytes();
   }
 
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
+  set walletAddress(value: Bytes) {
+    this.set("walletAddress", Value.fromBytes(value));
+  }
+
+  get profileInfoCID(): string {
+    let value = this.get("profileInfoCID");
+    return value!.toString();
+  }
+
+  set profileInfoCID(value: string) {
+    this.set("profileInfoCID", Value.fromString(value));
   }
 
   get email(): string | null {
@@ -194,23 +145,6 @@ export class User extends Entity {
     }
   }
 
-  get lensHandle(): string | null {
-    let value = this.get("lensHandle");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set lensHandle(value: string | null) {
-    if (!value) {
-      this.unset("lensHandle");
-    } else {
-      this.set("lensHandle", Value.fromString(<string>value));
-    }
-  }
-
   get createdAt(): BigInt {
     let value = this.get("createdAt");
     return value!.toBigInt();
@@ -237,22 +171,21 @@ export class User extends Entity {
     }
   }
 
-  get creator(): boolean {
-    let value = this.get("creator");
-    return value!.toBoolean();
+  get lensHandle(): string | null {
+    let value = this.get("lensHandle");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set creator(value: boolean) {
-    this.set("creator", Value.fromBoolean(value));
-  }
-
-  get collector(): boolean {
-    let value = this.get("collector");
-    return value!.toBoolean();
-  }
-
-  set collector(value: boolean) {
-    this.set("collector", Value.fromBoolean(value));
+  set lensHandle(value: string | null) {
+    if (!value) {
+      this.unset("lensHandle");
+    } else {
+      this.set("lensHandle", Value.fromString(<string>value));
+    }
   }
 }
 
@@ -296,13 +229,13 @@ export class Link extends Entity {
     this.set("name", Value.fromString(value));
   }
 
-  get address(): Bytes {
-    let value = this.get("address");
-    return value!.toBytes();
+  get url(): string {
+    let value = this.get("url");
+    return value!.toString();
   }
 
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
+  set url(value: string) {
+    this.set("url", Value.fromString(value));
   }
 }
 
@@ -337,6 +270,33 @@ export class FontProject extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get creatorAddress(): Bytes {
+    let value = this.get("creatorAddress");
+    return value!.toBytes();
+  }
+
+  set creatorAddress(value: Bytes) {
+    this.set("creatorAddress", Value.fromBytes(value));
+  }
+
+  get perCharacterMintPrice(): BigInt {
+    let value = this.get("perCharacterMintPrice");
+    return value!.toBigInt();
+  }
+
+  set perCharacterMintPrice(value: BigInt) {
+    this.set("perCharacterMintPrice", Value.fromBigInt(value));
+  }
+
+  get metaDataCID(): string {
+    let value = this.get("metaDataCID");
+    return value!.toString();
+  }
+
+  set metaDataCID(value: string) {
+    this.set("metaDataCID", Value.fromString(value));
+  }
+
   get name(): string {
     let value = this.get("name");
     return value!.toString();
@@ -363,26 +323,8 @@ export class FontProject extends Entity {
     }
   }
 
-  get perCharacterMintPrice(): BigInt {
-    let value = this.get("perCharacterMintPrice");
-    return value!.toBigInt();
-  }
-
-  set perCharacterMintPrice(value: BigInt) {
-    this.set("perCharacterMintPrice", Value.fromBigInt(value));
-  }
-
-  get creator(): Bytes {
-    let value = this.get("creator");
-    return value!.toBytes();
-  }
-
-  set creator(value: Bytes) {
-    this.set("creator", Value.fromBytes(value));
-  }
-
-  get idaRoyaltyIndex(): BigInt | null {
-    let value = this.get("idaRoyaltyIndex");
+  get royaltyIDAIndex(): BigInt | null {
+    let value = this.get("royaltyIDAIndex");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -390,12 +332,39 @@ export class FontProject extends Entity {
     }
   }
 
-  set idaRoyaltyIndex(value: BigInt | null) {
+  set royaltyIDAIndex(value: BigInt | null) {
     if (!value) {
-      this.unset("idaRoyaltyIndex");
+      this.unset("royaltyIDAIndex");
     } else {
-      this.set("idaRoyaltyIndex", Value.fromBigInt(<BigInt>value));
+      this.set("royaltyIDAIndex", Value.fromBigInt(<BigInt>value));
     }
+  }
+
+  get idaDistributionToken(): Bytes {
+    let value = this.get("idaDistributionToken");
+    return value!.toBytes();
+  }
+
+  set idaDistributionToken(value: Bytes) {
+    this.set("idaDistributionToken", Value.fromBytes(value));
+  }
+
+  get fontFilesCID(): string {
+    let value = this.get("fontFilesCID");
+    return value!.toString();
+  }
+
+  set fontFilesCID(value: string) {
+    this.set("fontFilesCID", Value.fromString(value));
+  }
+
+  get mintLimit(): BigInt {
+    let value = this.get("mintLimit");
+    return value!.toBigInt();
+  }
+
+  set mintLimit(value: BigInt) {
+    this.set("mintLimit", Value.fromBigInt(value));
   }
 
   get launchDateTime(): BigInt {
@@ -430,49 +399,6 @@ export class FontProject extends Entity {
       this.unset("updatedAt");
     } else {
       this.set("updatedAt", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get fontFilesCID(): string | null {
-    let value = this.get("fontFilesCID");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set fontFilesCID(value: string | null) {
-    if (!value) {
-      this.unset("fontFilesCID");
-    } else {
-      this.set("fontFilesCID", Value.fromString(<string>value));
-    }
-  }
-
-  get mintings(): i32 {
-    let value = this.get("mintings");
-    return value!.toI32();
-  }
-
-  set mintings(value: i32) {
-    this.set("mintings", Value.fromI32(value));
-  }
-
-  get distributionToken(): Bytes | null {
-    let value = this.get("distributionToken");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set distributionToken(value: Bytes | null) {
-    if (!value) {
-      this.unset("distributionToken");
-    } else {
-      this.set("distributionToken", Value.fromBytes(<Bytes>value));
     }
   }
 }

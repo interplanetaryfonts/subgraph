@@ -1,28 +1,25 @@
 import { Address, ipfs, json } from '@graphprotocol/graph-ts';
 import {
+    UserCreated,
+    FontProjectCreated,
     FontProjectMinted,
-    NewFontProjectCreated,
-} from '../generated/FontProject/FontProject';
-import { Search, User, Link, FontProject } from '../generated/schema';
+} from '../generated/FontProjectV2/FontProjectV2';
+import { User, Link, FontProject } from '../generated/schema';
 import { integer } from '@protofire/subgraph-toolkit';
 
-export function handleFontProjectMinted(event: FontProjectMinted): void {
+export function handleUserCreated(event: UserCreated): void {
     /*
-    event FontProjectMinted(
-      bytes32 fontId,
-      uint256 tokenId
+    event UserCreated(
+      address walletAddress,
+      string profileInfoCID,
+      uint256 createdAt,
+      uint256 updatedAt,
+      string lensHandle
     );
     */
-    let newFontProjectMinted = FontProject.load(event.params.fontId.toHex());
-    if (newFontProjectMinted == null) {
-        newFontProjectMinted = new FontProject(event.params.fontId.toHex());
-        //newFontProjectMinted.tokenId = event.params.tokenId;
-        newFontProjectMinted.save();
-    }
 }
-export function handleNewFontProjectCreated(
-    event: NewFontProjectCreated
-): void {
+
+export function handleFontProjectCreated(event: FontProjectCreated): void {
     /*
     event NewFontProjectCreated(
       bytes32 fontId,
@@ -33,15 +30,16 @@ export function handleNewFontProjectCreated(
       uint256 startDateTime
     );
     */
-    let newFontProjectCreated = FontProject.load(event.params.fontId.toHex());
-    if (newFontProjectCreated == null) {
-        newFontProjectCreated = new FontProject(event.params.fontId.toHex());
+    let newFontProjectCreated = FontProject.load(event.params.id.toHex());
+    if (newFontProjectCreated === null) {
+        newFontProjectCreated = new FontProject(event.params.id.toHex());
         newFontProjectCreated.fontFilesCID = event.params.metaDataCID;
         // These two might change with the new structure
-        newFontProjectCreated.creator = event.params.creatorAddress;
-        newFontProjectCreated.perCharacterMintPrice = event.params.mintPrice;
+        newFontProjectCreated.creatorAddress = event.params.creatorAddress;
+        newFontProjectCreated.perCharacterMintPrice =
+            event.params.perCharacterMintPrice;
         newFontProjectCreated.createdAt = event.params.createdAt;
-        newFontProjectCreated.launchDateTime = event.params.startDateTime;
+        newFontProjectCreated.launchDateTime = event.params.launchDateTime;
     }
     let metadata = ipfs.cat(`${event.params.metaDataCID}/data.json`);
     if (metadata) {
@@ -58,4 +56,21 @@ export function handleNewFontProjectCreated(
         }
     }
     newFontProjectCreated.save();
+}
+
+export function handleFontProjectMinted(event: FontProjectMinted): void {
+    /*
+    event FontProjectMinted(
+      bytes32 fontId,
+      uint256 tokenId
+    );
+    */
+    /* Cannot use load until there's an emit event inside the contract
+    let newFontProjectMinted = FontProjectMinted.load(event.params.id.toHex());
+    if (newFontProjectMinted === null) {
+        newFontProjectMinted = new FontProjectMinted(event.params.id.toHex());
+        newFontProjectMinted.tokenId = event.params.tokenId;
+        newFontProjectMinted.save();
+    }
+    */
 }

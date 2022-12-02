@@ -1,81 +1,49 @@
-# type FontProjectMinted @entity(immutable: true) {
-#     id: Bytes!
-#     fontId: Bytes! # bytes32
-#     tokenId: BigInt! # uint256
-#     blockNumber: BigInt!
-#     blockTimestamp: BigInt!
-#     transactionHash: Bytes!
-# }
-
-# type NewFontProjectCreated @entity(immutable: true) {
-#     id: Bytes!
-#     fontId: Bytes! # bytes32
-#     metaDataCID: String! # string
-#     creatorAddress: Bytes! # address
-#     mintPrice: BigInt! # uint256
-#     createdAt: BigInt! # uint256
-#     startDateTime: BigInt! # uint256
-#     blockNumber: BigInt!
-#     blockTimestamp: BigInt!
-#     transactionHash: Bytes!
-# }
-
-"Global searches for the InterplanetaryFonts marketplace based on ERD"
-type Search @entity {
-    id: ID!
-    users: [User!]!
-    "There always be an user but some won't have projects"
-    fontProjects: [FontProject!]
-    # "Some projects won't have streams"
-    # fontStreams: [FontStream!]
-    # Strems might need an extra subgraph
-}
-
 "Users structure"
 type User @entity {
     id: ID!
-    address: Bytes!
+    walletAddress: Bytes!
+    "Profile data in IPFS"
+    profileInfoCID: String!
     email: String
     name: String
     website: String
     bio: String
     links: [Link!]
-    lensHandle: String
     "Dates as BigInts, usefull for sorting"
     createdAt: BigInt!
     updatedAt: BigInt
-    "Check if is creator and/or collectors"
-    creator: Boolean!
-    collector: Boolean!
+    "Lens Handle can be null for collectors"
+    lensHandle: String
 }
 
 "If there's a link it will need this structure"
 type Link @entity {
     id: ID!
     name: String!
-    address: Bytes!
+    url: String!
 }
 
 "Font Project"
 type FontProject @entity {
     id: ID!
-    "Values from CID"
+    creatorAddress: Bytes!
+    "Price per character"
+    perCharacterMintPrice: BigInt!
+    "Font metadata in IPFS"
+    metaDataCID: String!
     name: String!
     description: String
-    perCharacterMintPrice: BigInt!
-    creator: Bytes!
-    "Superfluid related data"
-    idaRoyaltyIndex: BigInt
+    "Superfluid Immediate Distribution Agreement data"
+    royaltyIDAIndex: BigInt
+    idaDistributionToken: Bytes!
+    "Font files stored in IPFS"
+    fontFilesCID: String!
+    "Number of mints defined by creator"
+    mintLimit: BigInt!
     "Dates as BigInts, usefull for sorting"
     launchDateTime: BigInt!
     createdAt: BigInt!
     updatedAt: BigInt
-    "IPFS URL"
-    fontFilesCID: String
-    "Number of mints defined by creator int86"
-    mintings: Int
-    "Superfluid token contract address"
-    distributionToken: Bytes
 }
 
 # "Font Stream, funders, and collaborators"
