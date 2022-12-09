@@ -17,6 +17,17 @@ export function handleUserCreated(event: UserCreated): void {
       string lensHandle
     );
     */
+    let newUserCreated = User.load(event.params.walletAddress.toHex());
+    if (newUserCreated === null) {
+        newUserCreated = new User(event.params.walletAddress.toHex());
+        newUserCreated.walletAddress = event.params.walletAddress;
+        newUserCreated.profileInfoCID = event.params.profileInfoCID;
+        newUserCreated.createdAt = event.params.createdAt;
+        newUserCreated.updatedAt = event.params.updatedAt;
+        newUserCreated.lensHandle = event.params.lensHandle;
+      }
+    newUserCreated.save();
+
 }
 
 export function handleFontProjectCreated(event: FontProjectCreated): void {
