@@ -288,13 +288,21 @@ export class FontProject extends Entity {
     this.set("perCharacterMintPrice", Value.fromBigInt(value));
   }
 
-  get metaDataCID(): string {
+  get metaDataCID(): string | null {
     let value = this.get("metaDataCID");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set metaDataCID(value: string) {
-    this.set("metaDataCID", Value.fromString(value));
+  set metaDataCID(value: string | null) {
+    if (!value) {
+      this.unset("metaDataCID");
+    } else {
+      this.set("metaDataCID", Value.fromString(<string>value));
+    }
   }
 
   get name(): string {
