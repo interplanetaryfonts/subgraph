@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ interplanetaryfonts/interplanetaryfonts",
-    "create-local": "graph create --node http://localhost:8020/ interplanetaryfonts/interplanetaryfonts",
-    "remove-local": "graph remove --node http://localhost:8020/ interplanetaryfonts/interplanetaryfonts",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 interplanetaryfonts/interplanetaryfonts",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ interplanetaryfonts/fontproject",
+    "create-local": "graph create --node http://localhost:8020/ interplanetaryfonts/fontproject",
+    "remove-local": "graph remove --node http://localhost:8020/ interplanetaryfonts/fontproject",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 interplanetaryfonts/fontproject",
     "test": "graph test"
   },
   "dependencies": {
