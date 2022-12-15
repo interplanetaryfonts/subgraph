@@ -30,7 +30,7 @@ type FontProject @entity {
     "Price per character"
     perCharacterMintPrice: BigInt!
     "Font metadata in IPFS"
-    metaDataCID: String!
+    metaDataCID: String "will add ! back once the ui is wired up to create valid font project entities"
     name: String!
     description: String
     "Superfluid Immediate Distribution Agreement data"
