@@ -51,13 +51,21 @@ export class User extends Entity {
     this.set("walletAddress", Value.fromBytes(value));
   }
 
-  get profileInfoCID(): string {
+  get profileInfoCID(): string | null {
     let value = this.get("profileInfoCID");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set profileInfoCID(value: string) {
-    this.set("profileInfoCID", Value.fromString(value));
+  set profileInfoCID(value: string | null) {
+    if (!value) {
+      this.unset("profileInfoCID");
+    } else {
+      this.set("profileInfoCID", Value.fromString(<string>value));
+    }
   }
 
   get email(): string | null {
@@ -145,13 +153,21 @@ export class User extends Entity {
     }
   }
 
-  get createdAt(): BigInt {
+  get createdAt(): BigInt | null {
     let value = this.get("createdAt");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set createdAt(value: BigInt) {
-    this.set("createdAt", Value.fromBigInt(value));
+  set createdAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("createdAt");
+    } else {
+      this.set("createdAt", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get updatedAt(): BigInt | null {
@@ -279,13 +295,21 @@ export class FontProject extends Entity {
     this.set("creatorAddress", Value.fromBytes(value));
   }
 
-  get perCharacterMintPrice(): BigInt {
+  get perCharacterMintPrice(): BigInt | null {
     let value = this.get("perCharacterMintPrice");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set perCharacterMintPrice(value: BigInt) {
-    this.set("perCharacterMintPrice", Value.fromBigInt(value));
+  set perCharacterMintPrice(value: BigInt | null) {
+    if (!value) {
+      this.unset("perCharacterMintPrice");
+    } else {
+      this.set("perCharacterMintPrice", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get metaDataCID(): string | null {
@@ -305,13 +329,21 @@ export class FontProject extends Entity {
     }
   }
 
-  get name(): string {
+  get name(): string | null {
     let value = this.get("name");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
   }
 
   get description(): string | null {
@@ -348,49 +380,89 @@ export class FontProject extends Entity {
     }
   }
 
-  get idaDistributionToken(): Bytes {
+  get idaDistributionToken(): Bytes | null {
     let value = this.get("idaDistributionToken");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set idaDistributionToken(value: Bytes) {
-    this.set("idaDistributionToken", Value.fromBytes(value));
+  set idaDistributionToken(value: Bytes | null) {
+    if (!value) {
+      this.unset("idaDistributionToken");
+    } else {
+      this.set("idaDistributionToken", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get fontFilesCID(): string {
+  get fontFilesCID(): string | null {
     let value = this.get("fontFilesCID");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set fontFilesCID(value: string) {
-    this.set("fontFilesCID", Value.fromString(value));
+  set fontFilesCID(value: string | null) {
+    if (!value) {
+      this.unset("fontFilesCID");
+    } else {
+      this.set("fontFilesCID", Value.fromString(<string>value));
+    }
   }
 
-  get mintLimit(): BigInt {
+  get mintLimit(): BigInt | null {
     let value = this.get("mintLimit");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set mintLimit(value: BigInt) {
-    this.set("mintLimit", Value.fromBigInt(value));
+  set mintLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("mintLimit");
+    } else {
+      this.set("mintLimit", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get launchDateTime(): BigInt {
+  get launchDateTime(): BigInt | null {
     let value = this.get("launchDateTime");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set launchDateTime(value: BigInt) {
-    this.set("launchDateTime", Value.fromBigInt(value));
+  set launchDateTime(value: BigInt | null) {
+    if (!value) {
+      this.unset("launchDateTime");
+    } else {
+      this.set("launchDateTime", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get createdAt(): BigInt {
+  get createdAt(): BigInt | null {
     let value = this.get("createdAt");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set createdAt(value: BigInt) {
-    this.set("createdAt", Value.fromBigInt(value));
+  set createdAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("createdAt");
+    } else {
+      this.set("createdAt", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get updatedAt(): BigInt | null {

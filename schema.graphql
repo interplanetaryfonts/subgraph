@@ -1,16 +1,18 @@
+# Add ! to all values needed when the subgraph allows deployment
+
 "Users structure"
 type User @entity {
     id: ID!
     walletAddress: Bytes!
     "Profile data in IPFS"
-    profileInfoCID: String!
+    profileInfoCID: String
     email: String
     name: String
     website: String
     bio: String
     links: [Link!]
     "Dates as BigInts, usefull for sorting"
-    createdAt: BigInt!
+    createdAt: BigInt
     updatedAt: BigInt
     "Lens Handle can be null for collectors"
     lensHandle: String
@@ -28,21 +30,21 @@ type FontProject @entity {
     id: ID!
     creatorAddress: Bytes!
     "Price per character"
-    perCharacterMintPrice: BigInt!
+    perCharacterMintPrice: BigInt
     "Font metadata in IPFS"
-    metaDataCID: String "will add ! back once the ui is wired up to create valid font project entities"
-    name: String!
+    metaDataCID: String
+    name: String
     description: String
     "Superfluid Immediate Distribution Agreement data"
     royaltyIDAIndex: BigInt
-    idaDistributionToken: Bytes!
+    idaDistributionToken: Bytes
     "Font files stored in IPFS"
-    fontFilesCID: String!
+    fontFilesCID: String
     "Number of mints defined by creator"
-    mintLimit: BigInt!
+    mintLimit: BigInt
     "Dates as BigInts, usefull for sorting"
-    launchDateTime: BigInt!
-    createdAt: BigInt!
+    launchDateTime: BigInt
+    createdAt: BigInt
     updatedAt: BigInt
 }
 
