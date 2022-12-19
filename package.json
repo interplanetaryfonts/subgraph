@@ -1,22 +1,22 @@
 {
-    "name": "interplanetaryfonts",
-    "license": "UNLICENSED",
-    "scripts": {
-        "codegen": "graph codegen",
-        "build": "graph build",
-        "deploy": "graph deploy --product hosted-service interplanetaryfonts/interplanetaryfonts",
-        "create-local": "graph create --node http://localhost:8020/ interplanetaryfonts/interplanetaryfonts",
-        "remove-local": "graph remove --node http://localhost:8020/ interplanetaryfonts/interplanetaryfonts",
-        "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 interplanetaryfonts/interplanetaryfonts",
-        "test": "graph test"
-    },
-    "dependencies": {
-        "@graphprotocol/graph-cli": "0.36.1",
-        "@graphprotocol/graph-ts": "^0.29.0",
-        "@protofire/subgraph-toolkit": "^0.1.2"
-    },
-    "devDependencies": {
-        "matchstick-as": "0.5.0",
-        "typescript": "^4.9.3"
-    }
+  "name": "interplanetaryfonts",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ interplanetaryfonts/fontproject",
+    "create-local": "graph create --node http://localhost:8020/ interplanetaryfonts/fontproject",
+    "remove-local": "graph remove --node http://localhost:8020/ interplanetaryfonts/fontproject",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 interplanetaryfonts/fontproject",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.36.1",
+    "@graphprotocol/graph-ts": "^0.29.0",
+    "@protofire/subgraph-toolkit": "^0.1.2"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0",
+    "typescript": "^4.9.3"
+  }
 }
