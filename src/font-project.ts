@@ -1,11 +1,18 @@
-import { Address, ipfs, json } from '@graphprotocol/graph-ts';
+import { Bytes, ipfs, json } from '@graphprotocol/graph-ts';
 import {
     UserCreated,
     FontProjectCreated,
     FontProjectMinted,
 } from '../generated/FontProjectV2/FontProjectV2';
 import { User, Link, FontProject } from '../generated/schema';
-import { integer } from '@protofire/subgraph-toolkit';
+
+function persistenIPFS(cid: string): Bytes {
+    let metadata: Bytes = new Bytes(0);
+    for (let i = 0; i < 5; i++) {
+        metadata = ipfs.cat(`${cid}/data.json`) as Bytes;
+    }
+    return metadata as Bytes;
+}
 
 export function handleUserCreated(event: UserCreated): void {
     /*
@@ -22,12 +29,35 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
+        let metadata = persistenIPFS(event.params.profileInfoCID);
+        if (metadata) {
+            const value = json.fromBytes(metadata).toObject();
+            if (value) {
+                const name = value.get('name');
+                if (name) {
+                    newUserCreated.name = name.toString();
+                }
+                const bio = value.get('bio');
+                if (bio) {
+                    newUserCreated.bio = bio.toString();
+                }
+                /*
+                // Couldn't find how to get links
+                const links = value.get('links');
+                if (links) {
+                    const linksArr = links.toArray();
+                    if (linksArr) {
+                        newUserCreated.links?.push(linksArr.toString());
+                    }
+                }
+                */
+            }
+        }
         newUserCreated.createdAt = event.params.createdAt;
         newUserCreated.updatedAt = event.params.updatedAt;
         newUserCreated.lensHandle = event.params.lensHandle;
-      }
+    }
     newUserCreated.save();
-
 }
 
 export function handleFontProjectCreated(event: FontProjectCreated): void {
@@ -44,27 +74,26 @@ export function handleFontProjectCreated(event: FontProjectCreated): void {
     let newFontProjectCreated = FontProject.load(event.params.id.toHex());
     if (newFontProjectCreated === null) {
         newFontProjectCreated = new FontProject(event.params.id.toHex());
-        newFontProjectCreated.fontFilesCID = event.params.metaDataCID;
-        // These two might change with the new structure
         newFontProjectCreated.creatorAddress = event.params.creatorAddress;
         newFontProjectCreated.perCharacterMintPrice =
             event.params.perCharacterMintPrice;
-        newFontProjectCreated.createdAt = event.params.createdAt;
-        newFontProjectCreated.launchDateTime = event.params.launchDateTime;
-    }
-    let metadata = ipfs.cat(`${event.params.metaDataCID}/data.json`);
-    if (metadata) {
-        const value = json.fromBytes(metadata).toObject();
-        if (value) {
-            const name = value.get('name');
-            if (name) {
-                newFontProjectCreated.name = name.toString();
-            }
-            const description = value.get('description');
-            if (description) {
-                newFontProjectCreated.name = description.toString();
+        newFontProjectCreated.metaDataCID = event.params.metaDataCID;
+        let metadata = persistenIPFS(event.params.metaDataCID);
+        if (metadata) {
+            const value = json.fromBytes(metadata).toObject();
+            if (value) {
+                const name = value.get('name');
+                if (name) {
+                    newFontProjectCreated.name = name.toString();
+                }
+                const description = value.get('description');
+                if (description) {
+                    newFontProjectCreated.description = description.toString();
+                }
             }
         }
+        newFontProjectCreated.launchDateTime = event.params.launchDateTime;
+        newFontProjectCreated.createdAt = event.params.createdAt;
     }
     newFontProjectCreated.save();
 }
