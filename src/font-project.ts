@@ -8,7 +8,7 @@ import { User, Link, FontProject } from '../generated/schema';
 
 function persistenIPFS(cid: string): Bytes {
     let metadata: Bytes = new Bytes(0);
-    for (let i = 0; i < 5; i++) {
+    while (cid === null) {
         metadata = ipfs.cat(`${cid}/data.json`) as Bytes;
     }
     return metadata as Bytes;
