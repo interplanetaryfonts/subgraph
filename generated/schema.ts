@@ -51,21 +51,13 @@ export class User extends Entity {
     this.set("walletAddress", Value.fromBytes(value));
   }
 
-  get profileInfoCID(): string | null {
+  get profileInfoCID(): string {
     let value = this.get("profileInfoCID");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set profileInfoCID(value: string | null) {
-    if (!value) {
-      this.unset("profileInfoCID");
-    } else {
-      this.set("profileInfoCID", Value.fromString(<string>value));
-    }
+  set profileInfoCID(value: string) {
+    this.set("profileInfoCID", Value.fromString(value));
   }
 
   get email(): string | null {
@@ -312,21 +304,13 @@ export class FontProject extends Entity {
     }
   }
 
-  get metaDataCID(): string | null {
+  get metaDataCID(): string {
     let value = this.get("metaDataCID");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set metaDataCID(value: string | null) {
-    if (!value) {
-      this.unset("metaDataCID");
-    } else {
-      this.set("metaDataCID", Value.fromString(<string>value));
-    }
+  set metaDataCID(value: string) {
+    this.set("metaDataCID", Value.fromString(value));
   }
 
   get name(): string | null {

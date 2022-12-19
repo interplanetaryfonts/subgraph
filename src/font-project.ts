@@ -6,14 +6,6 @@ import {
 } from '../generated/FontProjectV2/FontProjectV2';
 import { User, Link, FontProject } from '../generated/schema';
 
-function persistenIPFS(cid: string): Bytes {
-    let metadata: Bytes = new Bytes(0);
-    while (cid === null) {
-        metadata = ipfs.cat(`${cid}/data.json`) as Bytes;
-    }
-    return metadata as Bytes;
-}
-
 export function handleUserCreated(event: UserCreated): void {
     /*
     event UserCreated(
@@ -29,9 +21,9 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
-        let metadata = persistenIPFS(event.params.profileInfoCID);
+        let metadata = ipfs.cat(`${event.params.profileInfoCID}/data.json`);
         if (metadata) {
-            const value = json.fromBytes(metadata).toObject();
+            let value = json.fromBytes(metadata).toObject();
             if (value) {
                 const name = value.get('name');
                 if (name) {
@@ -78,7 +70,7 @@ export function handleFontProjectCreated(event: FontProjectCreated): void {
         newFontProjectCreated.perCharacterMintPrice =
             event.params.perCharacterMintPrice;
         newFontProjectCreated.metaDataCID = event.params.metaDataCID;
-        let metadata = persistenIPFS(event.params.metaDataCID);
+        let metadata = ipfs.cat(`${event.params.metaDataCID}/data.json`);
         if (metadata) {
             const value = json.fromBytes(metadata).toObject();
             if (value) {

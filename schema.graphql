@@ -5,7 +5,7 @@ type User @entity {
     id: ID!
     walletAddress: Bytes!
     "Profile data in IPFS"
-    profileInfoCID: String
+    profileInfoCID: String!
     email: String
     name: String
     website: String
@@ -32,7 +32,7 @@ type FontProject @entity {
     "Price per character"
     perCharacterMintPrice: BigInt
     "Font metadata in IPFS"
-    metaDataCID: String
+    metaDataCID: String!
     name: String
     description: String
     "Superfluid Immediate Distribution Agreement data"
