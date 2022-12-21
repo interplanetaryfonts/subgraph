@@ -240,7 +240,7 @@ export class UserEdited__Params {
   }
 }
 
-export class FontProject__addressToUserResult {
+export class FontProjectV2__addressToUserResult {
   value0: Address;
   value1: string;
   value2: BigInt;
@@ -292,7 +292,7 @@ export class FontProject__addressToUserResult {
   }
 }
 
-export class FontProject__idToFontProjectResult {
+export class FontProjectV2__idToFontProjectResult {
   value0: Bytes;
   value1: Address;
   value2: BigInt;
@@ -392,19 +392,19 @@ export class FontProject__idToFontProjectResult {
   }
 }
 
-export class FontProject extends ethereum.SmartContract {
-  static bind(address: Address): FontProject {
-    return new FontProject("FontProject", address);
+export class FontProjectV2 extends ethereum.SmartContract {
+  static bind(address: Address): FontProjectV2 {
+    return new FontProjectV2("FontProjectV2", address);
   }
 
-  addressToUser(param0: Address): FontProject__addressToUserResult {
+  addressToUser(param0: Address): FontProjectV2__addressToUserResult {
     let result = super.call(
       "addressToUser",
       "addressToUser(address):(address,string,uint256,uint256,string)",
       [ethereum.Value.fromAddress(param0)]
     );
 
-    return new FontProject__addressToUserResult(
+    return new FontProjectV2__addressToUserResult(
       result[0].toAddress(),
       result[1].toString(),
       result[2].toBigInt(),
@@ -415,7 +415,7 @@ export class FontProject extends ethereum.SmartContract {
 
   try_addressToUser(
     param0: Address
-  ): ethereum.CallResult<FontProject__addressToUserResult> {
+  ): ethereum.CallResult<FontProjectV2__addressToUserResult> {
     let result = super.tryCall(
       "addressToUser",
       "addressToUser(address):(address,string,uint256,uint256,string)",
@@ -426,7 +426,7 @@ export class FontProject extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new FontProject__addressToUserResult(
+      new FontProjectV2__addressToUserResult(
         value[0].toAddress(),
         value[1].toString(),
         value[2].toBigInt(),
@@ -468,14 +468,14 @@ export class FontProject extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  idToFontProject(param0: Bytes): FontProject__idToFontProjectResult {
+  idToFontProject(param0: Bytes): FontProjectV2__idToFontProjectResult {
     let result = super.call(
       "idToFontProject",
       "idToFontProject(bytes32):(bytes32,address,uint256,string,uint32,address,string,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
 
-    return new FontProject__idToFontProjectResult(
+    return new FontProjectV2__idToFontProjectResult(
       result[0].toBytes(),
       result[1].toAddress(),
       result[2].toBigInt(),
@@ -492,7 +492,7 @@ export class FontProject extends ethereum.SmartContract {
 
   try_idToFontProject(
     param0: Bytes
-  ): ethereum.CallResult<FontProject__idToFontProjectResult> {
+  ): ethereum.CallResult<FontProjectV2__idToFontProjectResult> {
     let result = super.tryCall(
       "idToFontProject",
       "idToFontProject(bytes32):(bytes32,address,uint256,string,uint32,address,string,uint256,uint256,uint256,uint256)",
@@ -503,7 +503,7 @@ export class FontProject extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new FontProject__idToFontProjectResult(
+      new FontProjectV2__idToFontProjectResult(
         value[0].toBytes(),
         value[1].toAddress(),
         value[2].toBigInt(),

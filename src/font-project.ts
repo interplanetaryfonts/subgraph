@@ -1,10 +1,12 @@
-import { Bytes, ipfs, json } from '@graphprotocol/graph-ts';
+import { ipfs, json } from '@graphprotocol/graph-ts';
 import {
     UserCreated,
+    UserEdited,
     FontProjectCreated,
     FontProjectMinted,
-} from '../generated/FontProjectV2/FontProjectV2';
-import { User, Link, FontProject } from '../generated/schema';
+} from '../generated/FontProject/FontProject';
+import { User, FontProject } from '../generated/schema';
+import { UserMetadata as UserMetadataTemplate } from '../generated/templates';
 
 export function handleUserCreated(event: UserCreated): void {
     /*
@@ -21,35 +23,37 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
-        let metadata = ipfs.cat(`${event.params.profileInfoCID}/data.json`);
-        if (metadata) {
-            let value = json.fromBytes(metadata).toObject();
-            if (value) {
-                const name = value.get('name');
-                if (name) {
-                    newUserCreated.name = name.toString();
-                }
-                const bio = value.get('bio');
-                if (bio) {
-                    newUserCreated.bio = bio.toString();
-                }
-                /*
-                // Couldn't find how to get links
-                const links = value.get('links');
-                if (links) {
-                    const linksArr = links.toArray();
-                    if (linksArr) {
-                        newUserCreated.links?.push(linksArr.toString());
-                    }
-                }
-                */
-            }
-        }
+        const cidUri = `https://${event.params.profileInfoCID}.ipfs.w3s.link/data.json`;
+        UserMetadataTemplate.create(cidUri);
         newUserCreated.createdAt = event.params.createdAt;
         newUserCreated.updatedAt = event.params.updatedAt;
         newUserCreated.lensHandle = event.params.lensHandle;
     }
     newUserCreated.save();
+}
+
+export function handleUserEdited(event: UserEdited): void {
+    /*
+    event UserEdited (
+        address walletAddress,
+        string profileInfoCID,
+        uint256 createdAt,
+        uint256 updatedAt,
+        string lensHandle
+    );
+    */
+    let newUserEdited = User.load(event.params.walletAddress.toHex());
+    if (newUserEdited === null) {
+        newUserEdited = new User(event.params.walletAddress.toHex());
+        newUserEdited.walletAddress = event.params.walletAddress;
+        newUserEdited.profileInfoCID = event.params.profileInfoCID;
+        const cidUri = `https://${event.params.profileInfoCID}.ipfs.w3s.link/data.json`;
+        UserMetadataTemplate.create(cidUri);
+        newUserEdited.createdAt = event.params.createdAt;
+        newUserEdited.updatedAt = event.params.updatedAt;
+        newUserEdited.lensHandle = event.params.lensHandle;
+    }
+    newUserEdited.save();
 }
 
 export function handleFontProjectCreated(event: FontProjectCreated): void {

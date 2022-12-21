@@ -3,13 +3,14 @@ schema:
     file: ./schema.graphql
 features:
     - ipfsOnEthereumContracts
+    - fullTextSearch
 dataSources:
     - kind: ethereum
-      name: FontProjectV2
+      name: FontProject
       network: mumbai
       source:
           address: '0x94f24dbf0c81006284c76ba59bbabc5a24de1817'
-          abi: FontProjectV2
+          abi: FontProject
           startBlock: 29547385
       mapping:
           kind: ethereum/events
@@ -20,13 +21,30 @@ dataSources:
               - Link
               - FontProject
           abis:
-              - name: FontProjectV2
-                file: ./abis/FontProjectV2.json
+              - name: FontProject
+                file: ./abis/FontProject.json
           eventHandlers:
               - event: FontProjectCreated(bytes32,string,address,uint256,uint256,uint256,uint256)
                 handler: handleFontProjectCreated
               - event: UserCreated(address,string,uint256,uint256,string)
                 handler: handleUserCreated
+              - event: UserCreated(address,string,uint256,uint256,string)
+                handler: handleUserCreated
+              - event: UserEdited(address,string,uint256,uint256,string)
+                handler: handleUserEdited
               - event: FontProjectMinted(bytes32,uint256)
                 handler: handleFontProjectMinted
           file: ./src/font-project.ts
+templates:
+    - name: UserMetadata
+      kind: file/ipfs
+      mapping:
+          apiVersion: 0.0.7
+          language: wasm/assemblyscript
+          file: ./src/handle-user-metadata.ts
+          handler: handleUserMetadata
+          entities:
+              - UserMetadata
+          abis:
+              - name: FontProject
+                file: ./abis/FontProject.json

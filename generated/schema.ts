@@ -60,6 +60,106 @@ export class User extends Entity {
     this.set("profileInfoCID", Value.fromString(value));
   }
 
+  get profileInfo(): string | null {
+    let value = this.get("profileInfo");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set profileInfo(value: string | null) {
+    if (!value) {
+      this.unset("profileInfo");
+    } else {
+      this.set("profileInfo", Value.fromString(<string>value));
+    }
+  }
+
+  get createdAt(): BigInt | null {
+    let value = this.get("createdAt");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set createdAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("createdAt");
+    } else {
+      this.set("createdAt", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get updatedAt(): BigInt | null {
+    let value = this.get("updatedAt");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set updatedAt(value: BigInt | null) {
+    if (!value) {
+      this.unset("updatedAt");
+    } else {
+      this.set("updatedAt", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get lensHandle(): string | null {
+    let value = this.get("lensHandle");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set lensHandle(value: string | null) {
+    if (!value) {
+      this.unset("lensHandle");
+    } else {
+      this.set("lensHandle", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class UserMetadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UserMetadata entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UserMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UserMetadata", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UserMetadata | null {
+    return changetype<UserMetadata | null>(store.get("UserMetadata", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
   get email(): string | null {
     let value = this.get("email");
     if (!value || value.kind == ValueKind.NULL) {
@@ -142,57 +242,6 @@ export class User extends Entity {
       this.unset("links");
     } else {
       this.set("links", Value.fromStringArray(<Array<string>>value));
-    }
-  }
-
-  get createdAt(): BigInt | null {
-    let value = this.get("createdAt");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set createdAt(value: BigInt | null) {
-    if (!value) {
-      this.unset("createdAt");
-    } else {
-      this.set("createdAt", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get updatedAt(): BigInt | null {
-    let value = this.get("updatedAt");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set updatedAt(value: BigInt | null) {
-    if (!value) {
-      this.unset("updatedAt");
-    } else {
-      this.set("updatedAt", Value.fromBigInt(<BigInt>value));
-    }
-  }
-
-  get lensHandle(): string | null {
-    let value = this.get("lensHandle");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set lensHandle(value: string | null) {
-    if (!value) {
-      this.unset("lensHandle");
-    } else {
-      this.set("lensHandle", Value.fromString(<string>value));
     }
   }
 }

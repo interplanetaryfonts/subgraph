@@ -1,4 +1,21 @@
-# Add ! to all values needed when the subgraph allows deployment
+type _Schema_
+    @fulltext(
+        name: "UserSearch"
+        language: en
+        algorithm: rank
+        include: [
+            {
+                entity: "UserMetadata"
+                fields: [
+                    { name: "id" }
+                    { name: "name" }
+                    { name: "website" }
+                    { name: "bio" }
+                    { name: "links" }
+                ]
+            }
+        ]
+    )
 
 "Users structure"
 type User @entity {
@@ -6,16 +23,22 @@ type User @entity {
     walletAddress: Bytes!
     "Profile data in IPFS"
     profileInfoCID: String!
-    email: String
-    name: String
-    website: String
-    bio: String
-    links: [Link!]
+    profileInfo: UserMetadata
     "Dates as BigInts, usefull for sorting"
     createdAt: BigInt
     updatedAt: BigInt
     "Lens Handle can be null for collectors"
     lensHandle: String
+}
+
+"User metadata structure"
+type UserMetadata @entity {
+    id: ID!
+    email: String
+    name: String
+    website: String
+    bio: String
+    links: [Link!]
 }
 
 "If there's a link it will need this structure"
