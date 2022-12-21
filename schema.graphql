@@ -38,7 +38,7 @@ type UserMetadata @entity {
     name: String
     website: String
     bio: String
-    links: [Link!]
+    links: [Link!] @derivedFrom(field: "userMetaData")
 }
 
 "If there's a link it will need this structure"
@@ -46,6 +46,7 @@ type Link @entity {
     id: ID!
     name: String!
     url: String!
+    userMetaData: UserMetadata!
 }
 
 "Font Project"

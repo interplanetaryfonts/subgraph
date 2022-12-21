@@ -294,6 +294,15 @@ export class Link extends Entity {
   set url(value: string) {
     this.set("url", Value.fromString(value));
   }
+
+  get userMetaData(): string {
+    let value = this.get("userMetaData");
+    return value!.toString();
+  }
+
+  set userMetaData(value: string) {
+    this.set("userMetaData", Value.fromString(value));
+  }
 }
 
 export class FontProject extends Entity {

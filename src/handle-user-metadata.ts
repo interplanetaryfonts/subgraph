@@ -2,7 +2,9 @@ import { Bytes, json, dataSource } from '@graphprotocol/graph-ts';
 import { UserMetadata, Link } from '../generated/schema';
 
 export function handleUserMetadata(content: Bytes): void {
-    let userMetadata = new UserMetadata(dataSource.stringParam());
+    const userMetadataID = dataSource.stringParam();
+    const userMetadata = new UserMetadata(userMetadataID);
+
     const value = json.fromBytes(content).toObject();
     if (value) {
         const email = value.get('email');
@@ -23,24 +25,24 @@ export function handleUserMetadata(content: Bytes): void {
         }
         const links = value.get('links');
         if (links) {
-            let linksArray = links.toArray();
-            if (linksArray) {
-                userMetadata.links = linksArray.map<string>(link => {
-                    const linkObj = link.toObject();
-                    if (linkObj) {
-                        const linkName = linkObj.get('name');
-                        const linkUrl = linkObj.get('url');
-                        if (linkName && linkUrl) {
-                            const newLink = new Link(linkName.toString());
-                            newLink.name = linkName.toString();
-                            newLink.url = linkUrl.toString();
-                            //return newLink;
-                            return linkName.toString();
-                        }
+            links.toArray().forEach(link => {
+                const linkObj = link.toObject();
+                if (linkObj) {
+                    const linkName = linkObj.get('name');
+                    const linkUrl = linkObj.get('url');
+                    if (linkName && linkUrl) {
+                        const linkID = userMetadataID + linkUrl.toString();
+                        const newLink = new Link(linkID);
+                        // associate Link entity with parent UserMetadata entity
+                        newLink.userMetaData = userMetadata.id;
+                        newLink.name = linkName.toString();
+                        newLink.url = linkUrl.toString();
+
+                        newLink.save();
                     }
-                    return '';
-                });
-            }
+                }
+            });
+
         }
         userMetadata.save();
     }
