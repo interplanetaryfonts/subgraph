@@ -11,7 +11,7 @@ type _Schema_
                     { name: "name" }
                     { name: "website" }
                     { name: "bio" }
-                    { name: "links" }
+                    # { name: "links" }
                 ]
             }
         ]

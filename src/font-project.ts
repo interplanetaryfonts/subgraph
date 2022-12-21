@@ -23,7 +23,7 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
-        const cidUri = `https://${event.params.profileInfoCID}.ipfs.w3s.link/data.json`;
+        const cidUri = `${event.params.profileInfoCID}/data.json`;
         UserMetadataTemplate.create(cidUri);
         newUserCreated.createdAt = event.params.createdAt;
         newUserCreated.updatedAt = event.params.updatedAt;

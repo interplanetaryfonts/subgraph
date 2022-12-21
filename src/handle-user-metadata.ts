@@ -25,20 +25,20 @@ export function handleUserMetadata(content: Bytes): void {
         if (links) {
             let linksArray = links.toArray();
             if (linksArray) {
-                userMetadata.links = linksArray.map((link, i) => {
+                userMetadata.links = linksArray.map<string>(link => {
                     const linkObj = link.toObject();
                     if (linkObj) {
-                        const nl = new Link(`link-${i}`);
                         const linkName = linkObj.get('name');
-                        if (linkName) {
-                            nl.name = linkName.toString();
-                        }
                         const linkUrl = linkObj.get('url');
-                        if (linkUrl) {
-                            nl.url = linkUrl.toString();
+                        if (linkName && linkUrl) {
+                            const newLink = new Link(linkName.toString());
+                            newLink.name = linkName.toString();
+                            newLink.url = linkUrl.toString();
+                            //return newLink;
+                            return linkName.toString();
                         }
-                        return nl;
                     }
+                    return '';
                 });
             }
         }
