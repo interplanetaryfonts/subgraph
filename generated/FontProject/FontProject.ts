@@ -10,6 +10,88 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class AdminChanged extends ethereum.Event {
+  get params(): AdminChanged__Params {
+    return new AdminChanged__Params(this);
+  }
+}
+
+export class AdminChanged__Params {
+  _event: AdminChanged;
+
+  constructor(event: AdminChanged) {
+    this._event = event;
+  }
+
+  get previousAdmin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newAdmin(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class BeaconUpgraded extends ethereum.Event {
+  get params(): BeaconUpgraded__Params {
+    return new BeaconUpgraded__Params(this);
+  }
+}
+
+export class BeaconUpgraded__Params {
+  _event: BeaconUpgraded;
+
+  constructor(event: BeaconUpgraded) {
+    this._event = event;
+  }
+
+  get beacon(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class FontProjectCreated extends ethereum.Event {
+  get params(): FontProjectCreated__Params {
+    return new FontProjectCreated__Params(this);
+  }
+}
+
+export class FontProjectCreated__Params {
+  _event: FontProjectCreated;
+
+  constructor(event: FontProjectCreated) {
+    this._event = event;
+  }
+
+  get id(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get metaDataCID(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get creatorAddress(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get perCharacterMintPrice(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get mintLimit(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get launchDateTime(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get createdAt(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+}
+
 export class FontProjectMinted extends ethereum.Event {
   get params(): FontProjectMinted__Params {
     return new FontProjectMinted__Params(this);
@@ -23,7 +105,7 @@ export class FontProjectMinted__Params {
     this._event = event;
   }
 
-  get fontId(): Bytes {
+  get id(): Bytes {
     return this._event.parameters[0].value.toBytes();
   }
 
@@ -32,63 +114,209 @@ export class FontProjectMinted__Params {
   }
 }
 
-export class NewFontProjectCreated extends ethereum.Event {
-  get params(): NewFontProjectCreated__Params {
-    return new NewFontProjectCreated__Params(this);
+export class Initialized extends ethereum.Event {
+  get params(): Initialized__Params {
+    return new Initialized__Params(this);
   }
 }
 
-export class NewFontProjectCreated__Params {
-  _event: NewFontProjectCreated;
+export class Initialized__Params {
+  _event: Initialized;
 
-  constructor(event: NewFontProjectCreated) {
+  constructor(event: Initialized) {
     this._event = event;
   }
 
-  get fontId(): Bytes {
-    return this._event.parameters[0].value.toBytes();
+  get version(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+}
+
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
   }
 
-  get metaDataCID(): string {
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class Upgraded extends ethereum.Event {
+  get params(): Upgraded__Params {
+    return new Upgraded__Params(this);
+  }
+}
+
+export class Upgraded__Params {
+  _event: Upgraded;
+
+  constructor(event: Upgraded) {
+    this._event = event;
+  }
+
+  get implementation(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class UserCreated extends ethereum.Event {
+  get params(): UserCreated__Params {
+    return new UserCreated__Params(this);
+  }
+}
+
+export class UserCreated__Params {
+  _event: UserCreated;
+
+  constructor(event: UserCreated) {
+    this._event = event;
+  }
+
+  get walletAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get profileInfoCID(): string {
     return this._event.parameters[1].value.toString();
   }
 
-  get creatorAddress(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get createdAt(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 
-  get mintPrice(): BigInt {
+  get updatedAt(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get createdAt(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+  get lensHandle(): string {
+    return this._event.parameters[4].value.toString();
+  }
+}
+
+export class UserEdited extends ethereum.Event {
+  get params(): UserEdited__Params {
+    return new UserEdited__Params(this);
+  }
+}
+
+export class UserEdited__Params {
+  _event: UserEdited;
+
+  constructor(event: UserEdited) {
+    this._event = event;
   }
 
-  get startDateTime(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+  get walletAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get profileInfoCID(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get createdAt(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get updatedAt(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get lensHandle(): string {
+    return this._event.parameters[4].value.toString();
+  }
+}
+
+export class FontProject__addressToUserResult {
+  value0: Address;
+  value1: string;
+  value2: BigInt;
+  value3: BigInt;
+  value4: string;
+
+  constructor(
+    value0: Address,
+    value1: string,
+    value2: BigInt,
+    value3: BigInt,
+    value4: string
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromString(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set("value4", ethereum.Value.fromString(this.value4));
+    return map;
+  }
+
+  getWalletAddress(): Address {
+    return this.value0;
+  }
+
+  getProfileInfoCID(): string {
+    return this.value1;
+  }
+
+  getCreatedAt(): BigInt {
+    return this.value2;
+  }
+
+  getUpdatedAt(): BigInt {
+    return this.value3;
+  }
+
+  getLensHandle(): string {
+    return this.value4;
   }
 }
 
 export class FontProject__idToFontProjectResult {
   value0: Bytes;
-  value1: string;
-  value2: Address;
-  value3: BigInt;
-  value4: Address;
-  value5: BigInt;
-  value6: BigInt;
+  value1: Address;
+  value2: BigInt;
+  value3: string;
+  value4: BigInt;
+  value5: Address;
+  value6: string;
   value7: BigInt;
+  value8: BigInt;
+  value9: BigInt;
+  value10: BigInt;
 
   constructor(
     value0: Bytes,
-    value1: string,
-    value2: Address,
-    value3: BigInt,
-    value4: Address,
-    value5: BigInt,
-    value6: BigInt,
-    value7: BigInt
+    value1: Address,
+    value2: BigInt,
+    value3: string,
+    value4: BigInt,
+    value5: Address,
+    value6: string,
+    value7: BigInt,
+    value8: BigInt,
+    value9: BigInt,
+    value10: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -98,18 +326,24 @@ export class FontProject__idToFontProjectResult {
     this.value5 = value5;
     this.value6 = value6;
     this.value7 = value7;
+    this.value8 = value8;
+    this.value9 = value9;
+    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromFixedBytes(this.value0));
-    map.set("value1", ethereum.Value.fromString(this.value1));
-    map.set("value2", ethereum.Value.fromAddress(this.value2));
-    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
-    map.set("value4", ethereum.Value.fromAddress(this.value4));
-    map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
-    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
+    map.set("value1", ethereum.Value.fromAddress(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    map.set("value3", ethereum.Value.fromString(this.value3));
+    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
+    map.set("value5", ethereum.Value.fromAddress(this.value5));
+    map.set("value6", ethereum.Value.fromString(this.value6));
     map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
+    map.set("value8", ethereum.Value.fromUnsignedBigInt(this.value8));
+    map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
+    map.set("value10", ethereum.Value.fromUnsignedBigInt(this.value10));
     return map;
   }
 
@@ -117,32 +351,44 @@ export class FontProject__idToFontProjectResult {
     return this.value0;
   }
 
-  getMetaDataCID(): string {
+  getCreatorAddress(): Address {
     return this.value1;
   }
 
-  getCreatorAddress(): Address {
+  getPerCharacterMintPrice(): BigInt {
     return this.value2;
   }
 
-  getMintPrice(): BigInt {
+  getMetaDataCID(): string {
     return this.value3;
   }
 
-  getIdaDistributionToken(): Address {
+  getRoyaltyIDAIndex(): BigInt {
     return this.value4;
   }
 
-  getRoyaltyIDAIndex(): BigInt {
+  getIdaDistributionToken(): Address {
     return this.value5;
   }
 
-  getCreatedAt(): BigInt {
+  getFontFilesCID(): string {
     return this.value6;
   }
 
-  getStartDateTime(): BigInt {
+  getMintLimit(): BigInt {
     return this.value7;
+  }
+
+  getLaunchDateTime(): BigInt {
+    return this.value8;
+  }
+
+  getCreatedAt(): BigInt {
+    return this.value9;
+  }
+
+  getUpdatedAt(): BigInt {
+    return this.value10;
   }
 }
 
@@ -151,22 +397,96 @@ export class FontProject extends ethereum.SmartContract {
     return new FontProject("FontProject", address);
   }
 
+  addressToUser(param0: Address): FontProject__addressToUserResult {
+    let result = super.call(
+      "addressToUser",
+      "addressToUser(address):(address,string,uint256,uint256,string)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return new FontProject__addressToUserResult(
+      result[0].toAddress(),
+      result[1].toString(),
+      result[2].toBigInt(),
+      result[3].toBigInt(),
+      result[4].toString()
+    );
+  }
+
+  try_addressToUser(
+    param0: Address
+  ): ethereum.CallResult<FontProject__addressToUserResult> {
+    let result = super.tryCall(
+      "addressToUser",
+      "addressToUser(address):(address,string,uint256,uint256,string)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new FontProject__addressToUserResult(
+        value[0].toAddress(),
+        value[1].toString(),
+        value[2].toBigInt(),
+        value[3].toBigInt(),
+        value[4].toString()
+      )
+    );
+  }
+
+  fontProjectIdToMints(param0: Bytes, param1: BigInt): BigInt {
+    let result = super.call(
+      "fontProjectIdToMints",
+      "fontProjectIdToMints(bytes32,uint256):(uint256)",
+      [
+        ethereum.Value.fromFixedBytes(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_fontProjectIdToMints(
+    param0: Bytes,
+    param1: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "fontProjectIdToMints",
+      "fontProjectIdToMints(bytes32,uint256):(uint256)",
+      [
+        ethereum.Value.fromFixedBytes(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   idToFontProject(param0: Bytes): FontProject__idToFontProjectResult {
     let result = super.call(
       "idToFontProject",
-      "idToFontProject(bytes32):(bytes32,string,address,uint256,address,uint32,uint256,uint256)",
+      "idToFontProject(bytes32):(bytes32,address,uint256,string,uint32,address,string,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
 
     return new FontProject__idToFontProjectResult(
       result[0].toBytes(),
-      result[1].toString(),
-      result[2].toAddress(),
-      result[3].toBigInt(),
-      result[4].toAddress(),
-      result[5].toBigInt(),
-      result[6].toBigInt(),
-      result[7].toBigInt()
+      result[1].toAddress(),
+      result[2].toBigInt(),
+      result[3].toString(),
+      result[4].toBigInt(),
+      result[5].toAddress(),
+      result[6].toString(),
+      result[7].toBigInt(),
+      result[8].toBigInt(),
+      result[9].toBigInt(),
+      result[10].toBigInt()
     );
   }
 
@@ -175,7 +495,7 @@ export class FontProject extends ethereum.SmartContract {
   ): ethereum.CallResult<FontProject__idToFontProjectResult> {
     let result = super.tryCall(
       "idToFontProject",
-      "idToFontProject(bytes32):(bytes32,string,address,uint256,address,uint32,uint256,uint256)",
+      "idToFontProject(bytes32):(bytes32,address,uint256,string,uint32,address,string,uint256,uint256,uint256,uint256)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
@@ -185,15 +505,52 @@ export class FontProject extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new FontProject__idToFontProjectResult(
         value[0].toBytes(),
-        value[1].toString(),
-        value[2].toAddress(),
-        value[3].toBigInt(),
-        value[4].toAddress(),
-        value[5].toBigInt(),
-        value[6].toBigInt(),
-        value[7].toBigInt()
+        value[1].toAddress(),
+        value[2].toBigInt(),
+        value[3].toString(),
+        value[4].toBigInt(),
+        value[5].toAddress(),
+        value[6].toString(),
+        value[7].toBigInt(),
+        value[8].toBigInt(),
+        value[9].toBigInt(),
+        value[10].toBigInt()
       )
     );
+  }
+
+  owner(): Address {
+    let result = super.call("owner", "owner():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  proxiableUUID(): Bytes {
+    let result = super.call("proxiableUUID", "proxiableUUID():(bytes32)", []);
+
+    return result[0].toBytes();
+  }
+
+  try_proxiableUUID(): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "proxiableUUID",
+      "proxiableUUID():(bytes32)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 }
 
@@ -213,18 +570,6 @@ export class ConstructorCall__Inputs {
   constructor(call: ConstructorCall) {
     this._call = call;
   }
-
-  get _host(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _ida(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get _superToken(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
 }
 
 export class ConstructorCall__Outputs {
@@ -235,54 +580,62 @@ export class ConstructorCall__Outputs {
   }
 }
 
-export class AddCollaboratorCall extends ethereum.Call {
-  get inputs(): AddCollaboratorCall__Inputs {
-    return new AddCollaboratorCall__Inputs(this);
+export class AddFontStreamCollaboratorCall extends ethereum.Call {
+  get inputs(): AddFontStreamCollaboratorCall__Inputs {
+    return new AddFontStreamCollaboratorCall__Inputs(this);
   }
 
-  get outputs(): AddCollaboratorCall__Outputs {
-    return new AddCollaboratorCall__Outputs(this);
+  get outputs(): AddFontStreamCollaboratorCall__Outputs {
+    return new AddFontStreamCollaboratorCall__Outputs(this);
   }
 }
 
-export class AddCollaboratorCall__Inputs {
-  _call: AddCollaboratorCall;
+export class AddFontStreamCollaboratorCall__Inputs {
+  _call: AddFontStreamCollaboratorCall;
 
-  constructor(call: AddCollaboratorCall) {
+  constructor(call: AddFontStreamCollaboratorCall) {
     this._call = call;
   }
 
-  get fontId(): Bytes {
+  get fontProjectId(): Bytes {
     return this._call.inputValues[0].value.toBytes();
   }
 
   get collaborator(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
+
+  get deliverablesCID(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+
+  get fontStreamId(): Bytes {
+    return this._call.inputValues[3].value.toBytes();
+  }
 }
 
-export class AddCollaboratorCall__Outputs {
-  _call: AddCollaboratorCall;
+export class AddFontStreamCollaboratorCall__Outputs {
+  _call: AddFontStreamCollaboratorCall;
 
-  constructor(call: AddCollaboratorCall) {
+  constructor(call: AddFontStreamCollaboratorCall) {
     this._call = call;
   }
 }
 
-export class CreateNewFontProjectCall extends ethereum.Call {
-  get inputs(): CreateNewFontProjectCall__Inputs {
-    return new CreateNewFontProjectCall__Inputs(this);
+export class CreateFontProjectCall extends ethereum.Call {
+  get inputs(): CreateFontProjectCall__Inputs {
+    return new CreateFontProjectCall__Inputs(this);
   }
 
-  get outputs(): CreateNewFontProjectCall__Outputs {
-    return new CreateNewFontProjectCall__Outputs(this);
+  get outputs(): CreateFontProjectCall__Outputs {
+    return new CreateFontProjectCall__Outputs(this);
   }
 }
 
-export class CreateNewFontProjectCall__Inputs {
-  _call: CreateNewFontProjectCall;
+export class CreateFontProjectCall__Inputs {
+  _call: CreateFontProjectCall;
 
-  constructor(call: CreateNewFontProjectCall) {
+  constructor(call: CreateFontProjectCall) {
     this._call = call;
   }
 
@@ -290,23 +643,73 @@ export class CreateNewFontProjectCall__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get startDateTime(): BigInt {
+  get launchDateTime(): BigInt {
     return this._call.inputValues[1].value.toBigInt();
   }
 
-  get mintPrice(): BigInt {
+  get perCharacterMintPrice(): BigInt {
     return this._call.inputValues[2].value.toBigInt();
   }
 
+  get mintLimit(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get distributionSuperToken(): Address {
+    return this._call.inputValues[4].value.toAddress();
+  }
+
   get metaDataCID(): string {
-    return this._call.inputValues[3].value.toString();
+    return this._call.inputValues[5].value.toString();
+  }
+
+  get fontFilesCID(): string {
+    return this._call.inputValues[6].value.toString();
   }
 }
 
-export class CreateNewFontProjectCall__Outputs {
-  _call: CreateNewFontProjectCall;
+export class CreateFontProjectCall__Outputs {
+  _call: CreateFontProjectCall;
 
-  constructor(call: CreateNewFontProjectCall) {
+  constructor(call: CreateFontProjectCall) {
+    this._call = call;
+  }
+}
+
+export class CreateUserCall extends ethereum.Call {
+  get inputs(): CreateUserCall__Inputs {
+    return new CreateUserCall__Inputs(this);
+  }
+
+  get outputs(): CreateUserCall__Outputs {
+    return new CreateUserCall__Outputs(this);
+  }
+}
+
+export class CreateUserCall__Inputs {
+  _call: CreateUserCall;
+
+  constructor(call: CreateUserCall) {
+    this._call = call;
+  }
+
+  get lensHandle(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get profileInfoCID(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get createdAt(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+}
+
+export class CreateUserCall__Outputs {
+  _call: CreateUserCall;
+
+  constructor(call: CreateUserCall) {
     this._call = call;
   }
 }
@@ -341,36 +744,224 @@ export class DistributeFontProfitCall__Outputs {
   }
 }
 
-export class MintFontProjectCall extends ethereum.Call {
-  get inputs(): MintFontProjectCall__Inputs {
-    return new MintFontProjectCall__Inputs(this);
+export class EditUserCall extends ethereum.Call {
+  get inputs(): EditUserCall__Inputs {
+    return new EditUserCall__Inputs(this);
   }
 
-  get outputs(): MintFontProjectCall__Outputs {
-    return new MintFontProjectCall__Outputs(this);
+  get outputs(): EditUserCall__Outputs {
+    return new EditUserCall__Outputs(this);
   }
 }
 
-export class MintFontProjectCall__Inputs {
-  _call: MintFontProjectCall;
+export class EditUserCall__Inputs {
+  _call: EditUserCall;
 
-  constructor(call: MintFontProjectCall) {
+  constructor(call: EditUserCall) {
     this._call = call;
   }
 
-  get fontId(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get lensHandle(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
-  get uri(): string {
+  get profileInfoCID(): string {
     return this._call.inputValues[1].value.toString();
+  }
+
+  get updatedAt(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
   }
 }
 
-export class MintFontProjectCall__Outputs {
-  _call: MintFontProjectCall;
+export class EditUserCall__Outputs {
+  _call: EditUserCall;
 
-  constructor(call: MintFontProjectCall) {
+  constructor(call: EditUserCall) {
+    this._call = call;
+  }
+}
+
+export class InitializeCall extends ethereum.Call {
+  get inputs(): InitializeCall__Inputs {
+    return new InitializeCall__Inputs(this);
+  }
+
+  get outputs(): InitializeCall__Outputs {
+    return new InitializeCall__Outputs(this);
+  }
+}
+
+export class InitializeCall__Inputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
+
+  get _host(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _ida(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get _ipfToken(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+}
+
+export class InitializeCall__Outputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
+}
+
+export class MinFontProjectCall extends ethereum.Call {
+  get inputs(): MinFontProjectCall__Inputs {
+    return new MinFontProjectCall__Inputs(this);
+  }
+
+  get outputs(): MinFontProjectCall__Outputs {
+    return new MinFontProjectCall__Outputs(this);
+  }
+}
+
+export class MinFontProjectCall__Inputs {
+  _call: MinFontProjectCall;
+
+  constructor(call: MinFontProjectCall) {
+    this._call = call;
+  }
+}
+
+export class MinFontProjectCall__Outputs {
+  _call: MinFontProjectCall;
+
+  constructor(call: MinFontProjectCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class UpgradeToCall extends ethereum.Call {
+  get inputs(): UpgradeToCall__Inputs {
+    return new UpgradeToCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToCall__Outputs {
+    return new UpgradeToCall__Outputs(this);
+  }
+}
+
+export class UpgradeToCall__Inputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpgradeToCall__Outputs {
+  _call: UpgradeToCall;
+
+  constructor(call: UpgradeToCall) {
+    this._call = call;
+  }
+}
+
+export class UpgradeToAndCallCall extends ethereum.Call {
+  get inputs(): UpgradeToAndCallCall__Inputs {
+    return new UpgradeToAndCallCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeToAndCallCall__Outputs {
+    return new UpgradeToAndCallCall__Outputs(this);
+  }
+}
+
+export class UpgradeToAndCallCall__Inputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
+    this._call = call;
+  }
+
+  get newImplementation(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get data(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+}
+
+export class UpgradeToAndCallCall__Outputs {
+  _call: UpgradeToAndCallCall;
+
+  constructor(call: UpgradeToAndCallCall) {
     this._call = call;
   }
 }

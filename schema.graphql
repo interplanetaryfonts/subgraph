@@ -33,6 +33,7 @@ type FontProject @entity {
     perCharacterMintPrice: BigInt
     "Font metadata in IPFS"
     metaDataCID: String!
+    metaDataURI: FontMetadata
     name: String
     description: String
     "Superfluid Immediate Distribution Agreement data"
@@ -46,6 +47,12 @@ type FontProject @entity {
     launchDateTime: BigInt
     createdAt: BigInt
     updatedAt: BigInt
+}
+
+type FontMetadata @entity {
+    id: ID!
+    name: String
+    description: String
 }
 
 # "Font Stream, funders, and collaborators"

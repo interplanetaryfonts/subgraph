@@ -3,8 +3,12 @@ import {
     UserCreated,
     FontProjectCreated,
     FontProjectMinted,
-} from '../generated/FontProjectV2/FontProjectV2';
+} from '../generated/FontProject/FontProject';
 import { User, Link, FontProject } from '../generated/schema';
+
+import {
+  FontMetadata as FontMetadataTemplate
+  } from '../generated/templates'
 
 export function handleUserCreated(event: UserCreated): void {
     /*
@@ -64,29 +68,23 @@ export function handleFontProjectCreated(event: FontProjectCreated): void {
     );
     */
     let newFontProjectCreated = FontProject.load(event.params.id.toHex());
+
     if (newFontProjectCreated === null) {
         newFontProjectCreated = new FontProject(event.params.id.toHex());
         newFontProjectCreated.creatorAddress = event.params.creatorAddress;
-        newFontProjectCreated.perCharacterMintPrice =
-            event.params.perCharacterMintPrice;
+        newFontProjectCreated.perCharacterMintPrice = event.params.perCharacterMintPrice;
+        
+        // IPFS related data
         newFontProjectCreated.metaDataCID = event.params.metaDataCID;
-        let metadata = ipfs.cat(`${event.params.metaDataCID}/data.json`);
-        if (metadata) {
-            const value = json.fromBytes(metadata).toObject();
-            if (value) {
-                const name = value.get('name');
-                if (name) {
-                    newFontProjectCreated.name = name.toString();
-                }
-                const description = value.get('description');
-                if (description) {
-                    newFontProjectCreated.description = description.toString();
-                }
-            }
-        }
+        const metadataIpfsHash = `${event.params.metaDataCID}/data.json`;
+        newFontProjectCreated.metaDataURI = metadataIpfsHash;
+
+        FontMetadataTemplate.create(metadataIpfsHash);
+
         newFontProjectCreated.launchDateTime = event.params.launchDateTime;
         newFontProjectCreated.createdAt = event.params.createdAt;
     }
+
     newFontProjectCreated.save();
 }
 
