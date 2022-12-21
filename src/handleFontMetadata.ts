@@ -12,6 +12,9 @@ export function handleFontMetadata(content: Bytes): void {
 
     if (name) {
       fontMetadata.name = name.toString();
+    }
+
+    if (description) {
       fontMetadata.description = description.toString();
     }
   }
