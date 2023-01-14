@@ -1,4 +1,3 @@
-import { Bytes, ipfs, json } from '@graphprotocol/graph-ts';
 import {
     UserCreated,
     FontProjectCreated,
@@ -26,7 +25,6 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
-        let metadata = ipfs.cat(`${event.params.profileInfoCID}/data.json`);
 
         // IPFS related metadata
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
