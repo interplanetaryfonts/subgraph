@@ -60,6 +60,23 @@ export class User extends Entity {
     this.set("profileInfoCID", Value.fromString(value));
   }
 
+  get metaData(): string | null {
+    let value = this.get("metaData");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set metaData(value: string | null) {
+    if (!value) {
+      this.unset("metaData");
+    } else {
+      this.set("metaData", Value.fromString(<string>value));
+    }
+  }
+
   get email(): string | null {
     let value = this.get("email");
     if (!value || value.kind == ValueKind.NULL) {
@@ -77,23 +94,6 @@ export class User extends Entity {
     }
   }
 
-  get name(): string | null {
-    let value = this.get("name");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set name(value: string | null) {
-    if (!value) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(<string>value));
-    }
-  }
-
   get website(): string | null {
     let value = this.get("website");
     if (!value || value.kind == ValueKind.NULL) {
@@ -108,23 +108,6 @@ export class User extends Entity {
       this.unset("website");
     } else {
       this.set("website", Value.fromString(<string>value));
-    }
-  }
-
-  get bio(): string | null {
-    let value = this.get("bio");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set bio(value: string | null) {
-    if (!value) {
-      this.unset("bio");
-    } else {
-      this.set("bio", Value.fromString(<string>value));
     }
   }
 
@@ -193,6 +176,72 @@ export class User extends Entity {
       this.unset("lensHandle");
     } else {
       this.set("lensHandle", Value.fromString(<string>value));
+    }
+  }
+}
+
+export class UserMetadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UserMetadata entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UserMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UserMetadata", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UserMetadata | null {
+    return changetype<UserMetadata | null>(store.get("UserMetadata", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
+  }
+
+  get bio(): string | null {
+    let value = this.get("bio");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set bio(value: string | null) {
+    if (!value) {
+      this.unset("bio");
+    } else {
+      this.set("bio", Value.fromString(<string>value));
     }
   }
 }
@@ -313,8 +362,8 @@ export class FontProject extends Entity {
     this.set("metaDataCID", Value.fromString(value));
   }
 
-  get metaDataURI(): string | null {
-    let value = this.get("metaDataURI");
+  get metaData(): string | null {
+    let value = this.get("metaData");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -322,45 +371,11 @@ export class FontProject extends Entity {
     }
   }
 
-  set metaDataURI(value: string | null) {
+  set metaData(value: string | null) {
     if (!value) {
-      this.unset("metaDataURI");
+      this.unset("metaData");
     } else {
-      this.set("metaDataURI", Value.fromString(<string>value));
-    }
-  }
-
-  get name(): string | null {
-    let value = this.get("name");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set name(value: string | null) {
-    if (!value) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(<string>value));
-    }
-  }
-
-  get description(): string | null {
-    let value = this.get("description");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set description(value: string | null) {
-    if (!value) {
-      this.unset("description");
-    } else {
-      this.set("description", Value.fromString(<string>value));
+      this.set("metaData", Value.fromString(<string>value));
     }
   }
 

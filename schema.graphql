@@ -6,16 +6,21 @@ type User @entity {
     walletAddress: Bytes!
     "Profile data in IPFS"
     profileInfoCID: String!
+    metaData: UserMetadata
     email: String
-    name: String
     website: String
-    bio: String
     links: [Link!]
     "Dates as BigInts, usefull for sorting"
     createdAt: BigInt
     updatedAt: BigInt
     "Lens Handle can be null for collectors"
     lensHandle: String
+}
+
+type UserMetadata @entity {
+    id: ID!
+    name: String
+    bio: String
 }
 
 "If there's a link it will need this structure"
@@ -31,11 +36,10 @@ type FontProject @entity {
     creatorAddress: Bytes!
     "Price per character"
     perCharacterMintPrice: BigInt
-    "Font metadata in IPFS"
+    "Font metadata CID in IPFS"
     metaDataCID: String!
-    metaDataURI: FontMetadata
-    name: String
-    description: String
+    "Font metadata data from IPFS"
+    metaData: FontMetadata
     "Superfluid Immediate Distribution Agreement data"
     royaltyIDAIndex: BigInt
     idaDistributionToken: Bytes

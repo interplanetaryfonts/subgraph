@@ -11,3 +11,13 @@ export class FontMetadata extends DataSourceTemplate {
     DataSourceTemplate.createWithContext("FontMetadata", [cid], context);
   }
 }
+
+export class UserMetadata extends DataSourceTemplate {
+  static create(cid: string): void {
+    DataSourceTemplate.create("UserMetadata", [cid]);
+  }
+
+  static createWithContext(cid: string, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext("UserMetadata", [cid], context);
+  }
+}

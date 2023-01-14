@@ -10,7 +10,7 @@ dataSources:
       source:
           address: '0x94f24dbf0c81006284c76ba59bbabc5a24de1817'
           abi: FontProject
-          startBlock: 29547385
+          startBlock: 30585687
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.7
@@ -40,6 +40,18 @@ templates:
       handler: handleFontMetadata
       entities:
         - FontMetadata
+      abis:
+        - name: FontProject
+          file: ./abis/FontProject.json
+  - name: UserMetadata
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/handleUserMetadata.ts
+      handler: handleUserMetadata
+      entities:
+        - UserMetadata
       abis:
         - name: FontProject
           file: ./abis/FontProject.json
