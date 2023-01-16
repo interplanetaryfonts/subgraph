@@ -5,12 +5,12 @@ features:
     - ipfsOnEthereumContracts
 dataSources:
     - kind: ethereum
-      name: FontProjectV2
+      name: FontProject
       network: mumbai
       source:
           address: '0x94f24dbf0c81006284c76ba59bbabc5a24de1817'
-          abi: FontProjectV2
-          startBlock: 29547385
+          abi: FontProject
+          startBlock: 30585687
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.7
@@ -20,8 +20,8 @@ dataSources:
               - Link
               - FontProject
           abis:
-              - name: FontProjectV2
-                file: ./abis/FontProjectV2.json
+              - name: FontProject
+                file: ./abis/FontProject.json
           eventHandlers:
               - event: FontProjectCreated(bytes32,string,address,uint256,uint256,uint256,uint256)
                 handler: handleFontProjectCreated
@@ -30,3 +30,28 @@ dataSources:
               - event: FontProjectMinted(bytes32,uint256)
                 handler: handleFontProjectMinted
           file: ./src/font-project.ts
+templates:
+  - name: FontMetadata
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/handleFontMetadata.ts
+      handler: handleFontMetadata
+      entities:
+        - FontMetadata
+      abis:
+        - name: FontProject
+          file: ./abis/FontProject.json
+  - name: UserMetadata
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/handleUserMetadata.ts
+      handler: handleUserMetadata
+      entities:
+        - UserMetadata
+      abis:
+        - name: FontProject
+          file: ./abis/FontProject.json

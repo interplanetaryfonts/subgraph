@@ -1,10 +1,14 @@
-import { Bytes, ipfs, json } from '@graphprotocol/graph-ts';
 import {
     UserCreated,
     FontProjectCreated,
     FontProjectMinted,
-} from '../generated/FontProjectV2/FontProjectV2';
+} from '../generated/FontProject/FontProject';
 import { User, Link, FontProject } from '../generated/schema';
+
+import {
+  FontMetadata as FontMetadataTemplate,
+  UserMetadata as UserMetadataTemplate
+  } from '../generated/templates'
 
 export function handleUserCreated(event: UserCreated): void {
     /*
@@ -21,30 +25,13 @@ export function handleUserCreated(event: UserCreated): void {
         newUserCreated = new User(event.params.walletAddress.toHex());
         newUserCreated.walletAddress = event.params.walletAddress;
         newUserCreated.profileInfoCID = event.params.profileInfoCID;
-        let metadata = ipfs.cat(`${event.params.profileInfoCID}/data.json`);
-        if (metadata) {
-            let value = json.fromBytes(metadata).toObject();
-            if (value) {
-                const name = value.get('name');
-                if (name) {
-                    newUserCreated.name = name.toString();
-                }
-                const bio = value.get('bio');
-                if (bio) {
-                    newUserCreated.bio = bio.toString();
-                }
-                /*
-                // Couldn't find how to get links
-                const links = value.get('links');
-                if (links) {
-                    const linksArr = links.toArray();
-                    if (linksArr) {
-                        newUserCreated.links?.push(linksArr.toString());
-                    }
-                }
-                */
-            }
-        }
+
+        // IPFS related metadata
+        newUserCreated.profileInfoCID = event.params.profileInfoCID;
+        const metadataIpfsUri = `${event.params.profileInfoCID}/data.json`;
+        newUserCreated.metaData = metadataIpfsUri;
+        UserMetadataTemplate.create(metadataIpfsUri);
+
         newUserCreated.createdAt = event.params.createdAt;
         newUserCreated.updatedAt = event.params.updatedAt;
         newUserCreated.lensHandle = event.params.lensHandle;
@@ -64,29 +51,23 @@ export function handleFontProjectCreated(event: FontProjectCreated): void {
     );
     */
     let newFontProjectCreated = FontProject.load(event.params.id.toHex());
+
     if (newFontProjectCreated === null) {
         newFontProjectCreated = new FontProject(event.params.id.toHex());
         newFontProjectCreated.creatorAddress = event.params.creatorAddress;
-        newFontProjectCreated.perCharacterMintPrice =
-            event.params.perCharacterMintPrice;
+        newFontProjectCreated.perCharacterMintPrice = event.params.perCharacterMintPrice;
+        newFontProjectCreated.mintLimit = event.params.mintLimit;
+        
+        // IPFS related metadata
         newFontProjectCreated.metaDataCID = event.params.metaDataCID;
-        let metadata = ipfs.cat(`${event.params.metaDataCID}/data.json`);
-        if (metadata) {
-            const value = json.fromBytes(metadata).toObject();
-            if (value) {
-                const name = value.get('name');
-                if (name) {
-                    newFontProjectCreated.name = name.toString();
-                }
-                const description = value.get('description');
-                if (description) {
-                    newFontProjectCreated.description = description.toString();
-                }
-            }
-        }
+        const metadataIpfsUri = `${event.params.metaDataCID}/data.json`;
+        newFontProjectCreated.metaData = metadataIpfsUri;
+        FontMetadataTemplate.create(metadataIpfsUri);
+
         newFontProjectCreated.launchDateTime = event.params.launchDateTime;
         newFontProjectCreated.createdAt = event.params.createdAt;
     }
+
     newFontProjectCreated.save();
 }
 
